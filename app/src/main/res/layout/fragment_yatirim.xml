@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Yatırım Türü Spinner -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yatırım Türü"
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/spinnerYatirimTuru"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Yatırım İsmi -->
+        <EditText
+            android:id="@+id/editTextYatirimIsmi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Yatırım İsmi" />
+
+        <!-- Adet -->
+        <EditText
+            android:id="@+id/editTextAdet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="Adet" />
+
+        <!-- Birim Fiyat -->
+        <EditText
+            android:id="@+id/editTextBirimFiyat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="Birim Fiyat (₺)" />
+
+        <!-- Hesapla Butonu -->
+        <Button
+            android:id="@+id/buttonHesapla"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Yatırım Tutarını Hesapla" />
+
+        <!-- Sonuç -->
+        <TextView
+            android:id="@+id/textViewSonuc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Toplam Tutar: -"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingTop="12dp" />
+
+    </LinearLayout>
+</ScrollView>

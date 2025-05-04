@@ -3,4 +3,18 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string-array name="yatirim_turleri">
+        <item>Coin</item>
+        <item>Hisse</item>
+        <item>Döviz</item>
+    </string-array>
+
+    <string name="yatirim_isim">Yatırım İsmi</string>
+    <string name="adet">Adet</string>
+    <string name="birim_fiyat">Birim Fiyat</string>
+    <string name="hesapla">Hesapla</string>
+    <string name="sonuc">Sonuç</string>
+    <string name="yatirim_turu">Yatırım Türü</string>
+
 </resources>
