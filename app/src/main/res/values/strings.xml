@@ -8,8 +8,7 @@
         <item>Coin</item>
         <item>Hisse</item>
         <item>Döviz</item>
-        <item>Altın</item>
-        <item>Gümüş</item>
+        <item>Maden</item>
     </string-array>
 
     <string name="yatirim_isim">Yatırım İsmi</string>
@@ -23,5 +22,12 @@
         <item>Altın</item>
         <item>Gümüş</item>
     </string-array>
+
+    <string-array name="doviz_turleri">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>GBP</item>
+    </string-array>
+
 
 </resources>

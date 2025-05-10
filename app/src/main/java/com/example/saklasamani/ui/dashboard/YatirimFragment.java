@@ -10,19 +10,16 @@ import androidx.fragment.app.Fragment;
 import com.example.saklasamani.R;
 import com.example.saklasamani.manager.YatirimManager;
 import com.example.saklasamani.model.*;
-import java.util.Arrays;
-import java.util.List;
 
 public class YatirimFragment extends Fragment {
 
-    private Spinner spinnerYatirimTuru;
-    private EditText editTextYatirimIsmi, editTextAdet, editTextBirimFiyat;
-    private EditText editTextCoinSembol, editTextCoinTipi;
-    private EditText editTextSirketAdi, editTextSembol;
-    private Spinner spinnerDovizCinsi;
-    private Spinner spinnerMadenTuru;
-    private Button buttonHesapla;
-    private TextView textViewSonuc;
+    private Spinner spinnerYatirimTuru, spinnerDovizCinsi, spinnerMadenTuru;
+    private EditText etYatirimIsmi, etAdet, etBirimFiyat;
+    private EditText etCoinSembol, etCoinTipi, etSirketAdi, etHisseSembol;
+    private TextView tvSonuc;
+    private Button btnHesapla;
+
+    private LinearLayout layoutCoin, layoutHisse, layoutDoviz, layoutMaden;
 
     private YatirimManager yatirimManager;
 
@@ -30,141 +27,109 @@ public class YatirimFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_yatirim, container, false);
 
-        yatirimManager = new YatirimManager();
-
-        // UI elemanlarını bağla
+        // Bağlantılar
         spinnerYatirimTuru = root.findViewById(R.id.spinnerYatirimTuru);
-        editTextYatirimIsmi = root.findViewById(R.id.editTextYatirimIsmi);
-        editTextAdet = root.findViewById(R.id.editTextAdet);
-        editTextBirimFiyat = root.findViewById(R.id.editTextBirimFiyat);
-        editTextCoinSembol = root.findViewById(R.id.editTextCoinSembol);
-        editTextCoinTipi = root.findViewById(R.id.editTextCoinTipi);
-        editTextSirketAdi = root.findViewById(R.id.editTextSirketAdi);
-        editTextSembol = root.findViewById(R.id.editTextSembol);
         spinnerDovizCinsi = root.findViewById(R.id.spinnerDovizCinsi);
         spinnerMadenTuru = root.findViewById(R.id.spinnerMadenTuru);
-        buttonHesapla = root.findViewById(R.id.buttonHesapla);
-        textViewSonuc = root.findViewById(R.id.textViewSonuc);
 
-        // Spinner için adapter
-        ArrayAdapter<CharSequence> adapterYatirimTuru = ArrayAdapter.createFromResource(
-                getContext(),
-                R.array.yatirim_turleri,
-                android.R.layout.simple_spinner_item
-        );
-        adapterYatirimTuru.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerYatirimTuru.setAdapter(adapterYatirimTuru);
+        etYatirimIsmi = root.findViewById(R.id.editTextYatirimIsmi);
+        etAdet = root.findViewById(R.id.editTextAdet);
+        etBirimFiyat = root.findViewById(R.id.editTextBirimFiyat);
 
-        // Döviz cinsi spinner için adapter
-        List<String> dovizListesi = Arrays.asList("USD", "EUR", "GBP", "JPY", "CAD"); // Örnek dövizler
-        ArrayAdapter<String> adapterDovizCinsi = new ArrayAdapter<>(
-                getContext(),
-                android.R.layout.simple_spinner_item,
-                dovizListesi
-        );
-        adapterDovizCinsi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDovizCinsi.setAdapter(adapterDovizCinsi);
+        etCoinSembol = root.findViewById(R.id.editTextCoinSembol);
+        etCoinTipi = root.findViewById(R.id.editTextCoinTipi);
+        etSirketAdi = root.findViewById(R.id.editTextSirketAdi);
+        etHisseSembol = root.findViewById(R.id.editTextSembol);
 
-        // Maden türü spinner için adapter (strings.xml'den alınıyor)
-        ArrayAdapter<CharSequence> adapterMadenTuru = ArrayAdapter.createFromResource(
-                getContext(),
-                R.array.maden_turleri,
-                android.R.layout.simple_spinner_item
-        );
-        adapterMadenTuru.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMadenTuru.setAdapter(adapterMadenTuru);
+        layoutCoin = root.findViewById(R.id.layoutCoin);
+        layoutHisse = root.findViewById(R.id.layoutHisse);
+        layoutDoviz = root.findViewById(R.id.layoutDoviz);
+        layoutMaden = root.findViewById(R.id.layoutMaden);
 
-        // Spinner seçim dinleyicisi
+        tvSonuc = root.findViewById(R.id.textViewSonuc);
+        btnHesapla = root.findViewById(R.id.buttonHesapla);
+
+        yatirimManager = new YatirimManager();
+
+        // Spinner'lara veri yükle
+        initSpinners();
+
+        // Yatırım türü seçimi
         spinnerYatirimTuru.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String secilenTur = parent.getItemAtPosition(position).toString();
                 guncelleGirisAlanlari(secilenTur);
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Bir şey seçilmezse yapılacak işlemler (isteğe bağlı)
-            }
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        // Hesapla butonu dinleyicisi
-        buttonHesapla.setOnClickListener(v -> kaydetYatirim());
-
-        // Başlangıçta giriş alanlarını güncelle
-        guncelleGirisAlanlari(spinnerYatirimTuru.getSelectedItem().toString());
+        btnHesapla.setOnClickListener(v -> kaydetYatirim());
 
         return root;
     }
 
-    // Yatırım türüne göre giriş alanlarını göster/gizle
-    private void guncelleGirisAlanlari(String tur) {
-        editTextCoinSembol.setVisibility(tur.equals("Coin") ? View.VISIBLE : View.GONE);
-        editTextCoinTipi.setVisibility(tur.equals("Coin") ? View.VISIBLE : View.GONE);
-        editTextSirketAdi.setVisibility(tur.equals("Hisse") ? View.VISIBLE : View.GONE);
-        editTextSembol.setVisibility(tur.equals("Hisse") ? View.VISIBLE : View.GONE);
-        spinnerDovizCinsi.setVisibility(tur.equals("Döviz") ? View.VISIBLE : View.GONE);
-        spinnerMadenTuru.setVisibility(tur.equals("Altın") || tur.equals("Gümüş") ? View.VISIBLE : View.GONE);
+    private void initSpinners() {
+        ArrayAdapter<CharSequence> adapterTur = ArrayAdapter.createFromResource(getContext(), R.array.yatirim_turleri, android.R.layout.simple_spinner_item);
+        spinnerYatirimTuru.setAdapter(adapterTur);
+
+        ArrayAdapter<CharSequence> adapterDoviz = ArrayAdapter.createFromResource(getContext(), R.array.doviz_turleri, android.R.layout.simple_spinner_item);
+        spinnerDovizCinsi.setAdapter(adapterDoviz);
+
+        ArrayAdapter<CharSequence> adapterMaden = ArrayAdapter.createFromResource(getContext(), R.array.maden_turleri, android.R.layout.simple_spinner_item);
+        spinnerMadenTuru.setAdapter(adapterMaden);
     }
 
-    // Yatırımı kaydet ve sonucu göster
+    private void guncelleGirisAlanlari(String tur) {
+        layoutCoin.setVisibility(tur.equals("Coin") ? View.VISIBLE : View.GONE);
+        layoutHisse.setVisibility(tur.equals("Hisse") ? View.VISIBLE : View.GONE);
+        layoutDoviz.setVisibility(tur.equals("Döviz") ? View.VISIBLE : View.GONE);
+        layoutMaden.setVisibility((tur.equals("Altın") || tur.equals("Gümüş")) ? View.VISIBLE : View.GONE);
+    }
+
     private void kaydetYatirim() {
         try {
-            String isim = editTextYatirimIsmi.getText().toString();
-            double adet = Double.parseDouble(editTextAdet.getText().toString());
-            double birimFiyat = Double.parseDouble(editTextBirimFiyat.getText().toString());
+            String isim = etYatirimIsmi.getText().toString();
+            double adet = Double.parseDouble(etAdet.getText().toString());
+            double fiyat = Double.parseDouble(etBirimFiyat.getText().toString());
             String tur = spinnerYatirimTuru.getSelectedItem().toString();
 
             Yatirim yatirim = null;
 
             switch (tur) {
                 case "Coin":
-                    String sembol = editTextCoinSembol.getText().toString();
-                    String tip = editTextCoinTipi.getText().toString();
-                    yatirim = new Coin(isim, adet, birimFiyat, sembol, tip);
+                    yatirim = new Coin(isim, adet, fiyat, etCoinSembol.getText().toString(), etCoinTipi.getText().toString());
                     break;
                 case "Hisse":
-                    String sirket = editTextSirketAdi.getText().toString();
-                    String sembolHisse = editTextSembol.getText().toString();
-                    yatirim = new Borsa(isim, adet, birimFiyat, sirket, sembolHisse);
+                    yatirim = new Borsa(isim, adet, fiyat, etSirketAdi.getText().toString(), etHisseSembol.getText().toString());
                     break;
                 case "Döviz":
-                    String dovizCinsi = spinnerDovizCinsi.getSelectedItem().toString();
-                    yatirim = new Doviz(isim, adet, birimFiyat, dovizCinsi);
+                    yatirim = new Doviz(isim, adet, fiyat, spinnerDovizCinsi.getSelectedItem().toString());
                     break;
                 case "Altın":
                 case "Gümüş":
-                    String madenTuru = spinnerMadenTuru.getSelectedItem().toString();
-                    yatirim = new DegerliMaden(isim, adet, birimFiyat, madenTuru);
+                    yatirim = new DegerliMaden(isim, adet, fiyat, spinnerMadenTuru.getSelectedItem().toString());
                     break;
-                default:
-                    throw new IllegalArgumentException("Geçersiz yatırım türü!");
             }
 
             if (yatirim != null) {
                 yatirimManager.yatirimEkle(yatirim);
                 double toplam = yatirim.yatirimTutariHesapla();
-                textViewSonuc.setText(tur + " yatırımınız (" + isim + ") toplam: " + String.format("%.2f", toplam) + "₺");
-                // Giriş alanlarını temizleyebiliriz (isteğe bağlı)
-                temizleGirisAlanlari();
+                tvSonuc.setText(tur + " yatırımınız (" + isim + ") toplam: " + String.format("%.2f", toplam) + "₺");
+                temizleAlanlar();
             }
 
         } catch (NumberFormatException e) {
-            Toast.makeText(getContext(), "Lütfen geçerli sayılar girin.", Toast.LENGTH_SHORT).show();
-        } catch (IllegalArgumentException e) {
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Lütfen geçerli sayı girin", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Giriş alanlarını temizle (isteğe bağlı)
-    private void temizleGirisAlanlari() {
-        editTextYatirimIsmi.getText().clear();
-        editTextAdet.getText().clear();
-        editTextBirimFiyat.getText().clear();
-        editTextCoinSembol.getText().clear();
-        editTextCoinTipi.getText().clear();
-        editTextSirketAdi.getText().clear();
-        editTextSembol.getText().clear();
-        // Spinner'ları ilk seçeneğe döndürebiliriz (isteğe bağlı)
+    private void temizleAlanlar() {
+        etYatirimIsmi.setText("");
+        etAdet.setText("");
+        etBirimFiyat.setText("");
+        etCoinSembol.setText("");
+        etCoinTipi.setText("");
+        etSirketAdi.setText("");
+        etHisseSembol.setText("");
     }
 }
