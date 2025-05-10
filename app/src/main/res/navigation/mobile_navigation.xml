@@ -12,16 +12,16 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.saklasamani.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_gelir"
+        android:name="com.example.saklasamani.ui.gelir.GelirFragment"
+        android:label="@string/title_gelir"
+        tools:layout="@layout/fragment_gelir" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.saklasamani.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_harcama"
+        android:name="com.example.saklasamani.ui.harcama.HarcamaFragment"
+        android:label="@string/title_harcama"
+        tools:layout="@layout/fragment_harcama" />
 
     <fragment
         android:id="@+id/navigation_yatirim"

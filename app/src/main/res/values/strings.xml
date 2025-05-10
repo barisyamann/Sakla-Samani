@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Sakla Samani</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_gelir">Gelir</string>
+    <string name="title_harcama">Harcama</string>
     <string name="title_yatirim">Yatırım</string>
 
     <string-array name="yatirim_turleri">
