@@ -9,26 +9,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Yatırım Türü Spinner -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Yatırım Türü"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinnerYatirimTuru"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!-- Yatırım İsmi -->
         <EditText
             android:id="@+id/editTextYatirimIsmi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Yatırım İsmi" />
 
-        <!-- Adet -->
         <EditText
             android:id="@+id/editTextAdet"
             android:layout_width="match_parent"
@@ -36,7 +33,6 @@
             android:inputType="numberDecimal"
             android:hint="Adet" />
 
-        <!-- Birim Fiyat -->
         <EditText
             android:id="@+id/editTextBirimFiyat"
             android:layout_width="match_parent"
@@ -44,14 +40,52 @@
             android:inputType="numberDecimal"
             android:hint="Birim Fiyat (₺)" />
 
-        <!-- Hesapla Butonu -->
+        <EditText
+            android:id="@+id/editTextCoinSembol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Coin Sembolü (Örn: BTC)"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/editTextCoinTipi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Coin Tipi (Örn: Kripto)"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/editTextSirketAdi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Şirket Adı (Örn: ASELSAN)"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/editTextSembol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Sembol (Örn: ASELS)"
+            android:visibility="gone" />
+
+        <Spinner
+            android:id="@+id/spinnerDovizCinsi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <Spinner
+            android:id="@+id/spinnerMadenTuru"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/buttonHesapla"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Yatırım Tutarını Hesapla" />
 
-        <!-- Sonuç -->
         <TextView
             android:id="@+id/textViewSonuc"
             android:layout_width="match_parent"

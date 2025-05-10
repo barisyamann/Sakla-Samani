@@ -8,6 +8,8 @@
         <item>Coin</item>
         <item>Hisse</item>
         <item>Döviz</item>
+        <item>Altın</item>
+        <item>Gümüş</item>
     </string-array>
 
     <string name="yatirim_isim">Yatırım İsmi</string>
@@ -16,5 +18,10 @@
     <string name="hesapla">Hesapla</string>
     <string name="sonuc">Sonuç</string>
     <string name="yatirim_turu">Yatırım Türü</string>
+
+    <string-array name="maden_turleri">
+        <item>Altın</item>
+        <item>Gümüş</item>
+    </string-array>
 
 </resources>

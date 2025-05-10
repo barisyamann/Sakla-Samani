@@ -13,8 +13,6 @@ public abstract class Yatirim implements YatirimInterface
     }
 
     public abstract double yatirimTutariHesapla();
-    // Interface metodunu abstract olarak bırakıyoruz, alt sınıflar kendileri dolduracak
-    public abstract void bilgiGoster();
 
     // Getter ve Setter'lar
     public String getYatirimIsmi() {
