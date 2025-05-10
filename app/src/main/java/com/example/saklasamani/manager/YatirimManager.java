@@ -1,6 +1,6 @@
 package com.example.saklasamani.manager;
 
-import com.example.saklasamani.model.Yatirim;
+import com.example.saklasamani.model.yatirim.Yatirim;
 
 import java.util.ArrayList;
 import java.util.List;

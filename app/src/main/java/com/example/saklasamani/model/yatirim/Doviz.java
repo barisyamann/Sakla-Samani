@@ -1,12 +1,11 @@
-package com.example.saklasamani.model;
+package com.example.saklasamani.model.yatirim;
 
-public class DegerliMaden extends Yatirim
-{
-    private String madenTuru;
+public class Doviz extends Yatirim {
+    private String dovizCinsi;
 
-    public DegerliMaden(String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String madenTuru) {
+    public Doviz(String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String dovizCinsi) {
         super(yatirimIsmi, yatirimAdeti, yatirimBirimFiyati);
-        this.madenTuru = madenTuru;
+        this.dovizCinsi = dovizCinsi;
     }
 
     @Override
@@ -16,7 +15,7 @@ public class DegerliMaden extends Yatirim
 
     @Override
     public void bilgiGoster() {
-        System.out.println("Maden Türü: " + madenTuru);
+        System.out.println("Döviz Cinsi: " + dovizCinsi);
         System.out.println("Yatırım İsmi: " + yatirimIsmi);
         System.out.println("Adet: " + yatirimAdeti);
         System.out.println("Birim Fiyat: " + yatirimBirimFiyati);
@@ -24,11 +23,11 @@ public class DegerliMaden extends Yatirim
     }
 
     // Getter ve Setter
-    public String getMadenTuru() {
-        return madenTuru;
+    public String getDovizCinsi() {
+        return dovizCinsi;
     }
 
-    public void setMadenTuru(String madenTuru) {
-        this.madenTuru = madenTuru;
+    public void setDovizCinsi(String dovizCinsi) {
+        this.dovizCinsi = dovizCinsi;
     }
 }

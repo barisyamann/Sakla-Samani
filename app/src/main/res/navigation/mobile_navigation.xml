@@ -22,4 +22,10 @@
         android:name="com.example.saklasamani.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_yatirim"
+        android:name="com.example.saklasamani.ui.yatirim.YatirimFragment"
+        android:label="@string/title_yatirim"
+        tools:layout="@layout/fragment_yatirim" />
 </navigation>

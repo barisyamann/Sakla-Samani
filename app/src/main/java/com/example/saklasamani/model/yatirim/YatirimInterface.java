@@ -1,4 +1,4 @@
-package com.example.saklasamani.model;
+package com.example.saklasamani.model.yatirim;
 
 public interface YatirimInterface
 {

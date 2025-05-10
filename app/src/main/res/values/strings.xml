@@ -3,6 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_yatirim">Yatırım</string>
 
     <string-array name="yatirim_turleri">
         <item>Coin</item>

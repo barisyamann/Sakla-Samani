@@ -1,4 +1,4 @@
-package com.example.saklasamani.ui.dashboard;
+package com.example.saklasamani.ui.yatirim;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.example.saklasamani.R;
 import com.example.saklasamani.manager.YatirimManager;
-import com.example.saklasamani.model.*;
+import com.example.saklasamani.model.yatirim.Borsa;
+import com.example.saklasamani.model.yatirim.Coin;
+import com.example.saklasamani.model.yatirim.DegerliMaden;
+import com.example.saklasamani.model.yatirim.Doviz;
+import com.example.saklasamani.model.yatirim.Yatirim;
 
 public class YatirimFragment extends Fragment {
 
