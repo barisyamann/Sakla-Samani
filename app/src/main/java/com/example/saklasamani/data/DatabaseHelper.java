@@ -7,18 +7,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "MyAppDB.db";
+    private static final String DATABASE_NAME = "app_database.db";
     private static final int DATABASE_VERSION = 1;
 
-    // Buraya ihtiyaç duyduğun tablo CREATE cümlelerini ekle
-    private static final String SQL_CREATE_TABLES =
-            "CREATE TABLE IF NOT EXISTS example (" +
+    private static final String CREATE_USER_TABLE =
+            "CREATE TABLE user (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "name TEXT" +
-                    ");";
-
-    private static final String SQL_DROP_TABLES =
-            "DROP TABLE IF EXISTS example;";
+                    "income REAL, " +
+                    "userName TEXT, " +
+                    "password TEXT)";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -26,12 +23,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_TABLES);
+        db.execSQL(CREATE_USER_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_DROP_TABLES);
+        db.execSQL("DROP TABLE IF EXISTS user");
         onCreate(db);
     }
 }
