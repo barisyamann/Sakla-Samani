@@ -197,5 +197,4 @@ public class UserDao {
         db.close();
         return list;
     }
-
 }
