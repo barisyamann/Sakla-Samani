@@ -21,12 +21,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);  // activity_login.xml'i kullanıyoruz
+        setContentView(R.layout.activity_login);
 
         etUserName = findViewById(R.id.etUserName);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        btnGoToRegister = findViewById(R.id.btnGoToRegister); // Yeni buton
+        btnGoToRegister = findViewById(R.id.btnGoToRegister);
 
         userDao = new UserDao(this);
 
@@ -39,10 +39,9 @@ public class LoginActivity extends AppCompatActivity {
                 User user = userDao.login(userName, password);
                 if (user != null) {
                     Toast.makeText(LoginActivity.this, "Giriş başarılı!", Toast.LENGTH_SHORT).show();
-                    // Buraya giriş sonrası yönlendirme yapılabilir (örneğin: MainActivity)
+                    // User objesini MainActivity'ye gönderiyoruz
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra("userName", user.getUserName());
-                    intent.putExtra("income", user.getIncome()); // kullanıcı adı gönderiliyor, ihtiyaç varsa
+                    intent.putExtra("user", user); // User nesnesi Serializable olarak gönderiliyor
                     startActivity(intent);
                     finish();
                 } else {
