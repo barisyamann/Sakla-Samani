@@ -26,6 +26,13 @@
         android:hint="Gelir"
         android:inputType="numberDecimal" />
 
+    <EditText
+        android:id="@+id/etBudget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Bütçe"
+        android:inputType="numberDecimal" />
+
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"

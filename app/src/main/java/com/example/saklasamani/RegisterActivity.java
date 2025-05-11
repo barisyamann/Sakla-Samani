@@ -14,7 +14,7 @@ import com.example.saklasamani.model.User;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText etUserName, etPassword, etIncome;
+    private EditText etUserName, etPassword, etIncome, etBudget;
     private Button btnRegister, btnGoToLogin;
 
     private UserDao userDao;
@@ -27,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
         etUserName = findViewById(R.id.etUserName);
         etPassword = findViewById(R.id.etPassword);
         etIncome = findViewById(R.id.etIncome);
+        etBudget= findViewById(R.id.etBudget);
         btnRegister = findViewById(R.id.btnRegister);
         btnGoToLogin = findViewById(R.id.btnGoToLogin); // yeni buton
 
@@ -38,8 +39,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String userName = etUserName.getText().toString();
                 String password = etPassword.getText().toString();
                 double income = Double.parseDouble(etIncome.getText().toString());
+                double budget= Double.parseDouble(etBudget.getText().toString());
+                User user = new User(userName, password, income, budget);
 
-                User user = new User(userName, password, income);
                 long result = userDao.registerUser(user);
 
                 if (result != -1) {

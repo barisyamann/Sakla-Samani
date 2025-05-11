@@ -26,6 +26,7 @@ public class UserDao {
         values.put("userName", user.getUserName());
         values.put("password", user.getPassword());
         values.put("income", user.getIncome());
+        values.put("budget", user.getBudget());
 
         long result = db.insert("user", null, values);
         db.close();
@@ -35,7 +36,7 @@ public class UserDao {
     public User login(String userName, String password) {
         SQLiteDatabase db = dp.getReadableDatabase();
         Cursor cursor = db.query("user",
-                new String[]{"userName", "password", "income"},
+                new String[]{"userName", "password", "income", "budget"},
                 "userName = ? AND password = ?",
                 new String[]{userName, password},
                 null, null, null);
@@ -43,7 +44,8 @@ public class UserDao {
         User user = null;
         if (cursor.moveToFirst()) {
             double income = cursor.getDouble(cursor.getColumnIndexOrThrow("income"));
-            user = new User(userName, password, income);
+            double budget = cursor.getDouble(cursor.getColumnIndexOrThrow("budget"));
+            user = new User(userName, password, income, budget);
 
             // Extra incomes da yükleniyor:
             List<ExtraIncome> extraIncomes = getExtraIncomes(userName);

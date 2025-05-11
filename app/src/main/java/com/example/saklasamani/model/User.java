@@ -9,12 +9,14 @@ public class User implements Serializable {
     private String userName;
     private String password;
     private double income;
+    private double budget;
     private List<ExtraIncome> extraIncomes;
 
-    public User(String userName, String password, double income) {
+    public User(String userName, String password, double income, double budget) {
         this.userName = userName;
         this.password = password;
         this.income = income;
+        this.budget=budget;
         this.extraIncomes = new ArrayList<>();
     }
 
@@ -26,6 +28,9 @@ public class User implements Serializable {
 
     public double getIncome() { return income; }
     public void setIncome(double income) { this.income = income; }
+
+    public double getBudget() { return budget; }
+    public void setBudget(double budget) { this.budget = budget; }
 
     public List<ExtraIncome> getExtraIncomes() { return extraIncomes; }
 

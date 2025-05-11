@@ -11,9 +11,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_USER_TABLE =
             "CREATE TABLE user (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "userName TEXT, " +
+                    "password TEXT, " +
                     "income REAL, " +
-                    "userName TEXT UNIQUE, " +
-                    "password TEXT)";
+                    "budget REAL)";
 
     private static final String CREATE_EXTRA_INCOME_TABLE =
             "CREATE TABLE extra_income (" +
