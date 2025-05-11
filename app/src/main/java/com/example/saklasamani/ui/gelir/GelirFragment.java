@@ -1,38 +1,148 @@
 package com.example.saklasamani.ui.gelir;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.example.saklasamani.MainActivity;
 import com.example.saklasamani.R;
+import com.example.saklasamani.data.UserDao;
+import com.example.saklasamani.model.ExtraIncome;
+import com.example.saklasamani.model.User;
+
+import java.util.ArrayList;
 
 public class GelirFragment extends Fragment {
 
-    private GelirViewModel mViewModel;
+    private TextView tvIncome, tvTotalIncome, tvTotalExtra;
+    private EditText etAmount, etNote, etMainIncome;
+    private Button btnAddExtraToggle, btnConfirmExtra, btnUpdateIncome;
+    private ListView lvExtraIncomes;
+    private LinearLayout extraInputLayout;
 
-    public static GelirFragment newInstance() {
-        return new GelirFragment();
-    }
+    private User user;
+    private UserDao userDao;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> incomeNotes;
+    private ArrayList<ExtraIncome> extraIncomeList;
+    private boolean isExtraInputVisible = false;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_gelir, container, false);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(GelirViewModel.class);
-        // TODO: Use the ViewModel
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // User ve UserDao nesnelerini alıyoruz
+        user = MainActivity.currentUser;
+        userDao = new UserDao(requireContext());
+
+        // XML elemanlarını bağlama
+        tvIncome = view.findViewById(R.id.tvIncome);
+        tvTotalExtra = view.findViewById(R.id.tvTotalExtra);
+        tvTotalIncome = view.findViewById(R.id.tvTotalIncome);
+        etAmount = view.findViewById(R.id.etExtraAmount);
+        etNote = view.findViewById(R.id.etExtraNote);
+        btnAddExtraToggle = view.findViewById(R.id.btnAddExtra);
+        btnConfirmExtra = view.findViewById(R.id.btnConfirmExtra);
+        btnUpdateIncome = view.findViewById(R.id.btnUpdateIncome);
+        etMainIncome = view.findViewById(R.id.etMainIncome);
+        extraInputLayout = view.findViewById(R.id.extraInputLayout);
+        lvExtraIncomes = view.findViewById(R.id.lvExtraIncomes);
+
+        // Kullanıcı veritabanından ek gelirleri çekiyoruz
+        extraIncomeList = new ArrayList<>(userDao.getExtraIncomes(user.getUserName()));
+        incomeNotes = new ArrayList<>();
+        for (ExtraIncome ei : extraIncomeList) {
+            incomeNotes.add(ei.getAmount() + "₺ - " + ei.getNote());
+        }
+
+        // ListView adapter'ını ayarlıyoruz
+        adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, incomeNotes);
+        lvExtraIncomes.setAdapter(adapter);
+
+        // UI'yi güncelliyoruz
+        updateUI();
+
+        // Geliri güncelleme butonuna tıklama işlevi
+        btnUpdateIncome.setOnClickListener(v -> {
+            String incomeStr = etMainIncome.getText().toString().trim();
+            if (!incomeStr.isEmpty()) {
+                double newIncome = Double.parseDouble(incomeStr);
+                user.setIncome(newIncome);
+                userDao.updateIncome(user.getUserName(), newIncome);
+                updateUI();
+                Toast.makeText(requireContext(), "Gelir güncellendi.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireContext(), "Gelir boş olamaz.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Ek gelir girişini göster/gizle butonuna tıklama işlevi
+        btnAddExtraToggle.setOnClickListener(v -> {
+            isExtraInputVisible = !isExtraInputVisible;
+            extraInputLayout.setVisibility(isExtraInputVisible ? View.VISIBLE : View.GONE);
+        });
+
+        // Ek gelir ekleme butonuna tıklama işlevi
+        btnConfirmExtra.setOnClickListener(v -> {
+            String amountStr = etAmount.getText().toString().trim();
+            String note = etNote.getText().toString().trim();
+
+            // Giriş alanlarının dolu olup olmadığını kontrol etme
+            if (amountStr.isEmpty() || note.isEmpty()) {
+                Toast.makeText(requireContext(), "Tüm alanları doldurun.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            double amount = Double.parseDouble(amountStr);
+
+            // Yeni ek geliri veritabanına ekliyoruz
+            userDao.addExtraIncome(user.getUserName(), amount, note);
+            extraIncomeList.add(new ExtraIncome(amount, note));
+            incomeNotes.add(amount + "₺ - " + note);
+            adapter.notifyDataSetChanged();
+
+            // Giriş alanlarını temizliyoruz
+            etAmount.setText("");
+            etNote.setText("");
+            updateUI();
+        });
+
+        // Ek gelir listesinde öğe tıklanmasıyla silme işlemi
+        lvExtraIncomes.setOnItemClickListener((parent, view1, position, id) -> {
+            ExtraIncome toRemove = extraIncomeList.get(position);
+            boolean deleted = userDao.deleteExtraIncome(user.getUserName(), toRemove.getNote());
+
+            if (deleted) {
+                Toast.makeText(requireContext(), "Silindi", Toast.LENGTH_SHORT).show();
+                extraIncomeList.remove(position);
+                incomeNotes.remove(position);
+                adapter.notifyDataSetChanged();
+                updateUI();
+            }
+        });
     }
 
+    // UI'yi güncelleme işlevi
+    private void updateUI() {
+        tvIncome.setText("Gelir: " + user.getIncome() + "₺");
+
+        double totalExtra = 0;
+        for (ExtraIncome ei : extraIncomeList) {
+            totalExtra += ei.getAmount();
+        }
+
+        tvTotalExtra.setText("Ek Gelir Toplamı: " + totalExtra + "₺");
+        tvTotalIncome.setText("Toplam Gelir: " + (user.getIncome() + totalExtra) + "₺");
+    }
 }

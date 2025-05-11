@@ -1,13 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.gelir.GelirFragment">
+    android:orientation="vertical"
+    android:padding="16dp">
 
+    <!-- Ana gelir -->
     <TextView
+        android:id="@+id/tvIncome"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="wrap_content"
+        android:text="Gelir: 0₺"
+        android:textSize="18sp" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/etMainIncome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Yeni Gelir"
+        android:inputType="numberDecimal" />
+
+    <Button
+        android:id="@+id/btnUpdateIncome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Geliri Güncelle" />
+
+    <!-- Ek gelir toplamı -->
+    <TextView
+        android:id="@+id/tvTotalExtra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ek Gelir Toplamı: 0₺"
+        android:textSize="18sp" />
+
+    <!-- Toplam gelir -->
+    <TextView
+        android:id="@+id/tvTotalIncome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Toplam Gelir: 0₺"
+        android:textSize="18sp" />
+
+    <!-- Ek gelir giriş formunu aç/kapat -->
+    <Button
+        android:id="@+id/btnAddExtra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ek Gelir Ekle / Gizle" />
+
+    <!-- Ek gelir giriş alanları -->
+    <LinearLayout
+        android:id="@+id/extraInputLayout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/etExtraAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ek Gelir Tutarı"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/etExtraNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Not" />
+
+        <Button
+            android:id="@+id/btnConfirmExtra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ek Geliri Ekle" />
+    </LinearLayout>
+
+    <!-- Ek gelir listesi (ListView) -->
+    <ListView
+        android:id="@+id/lvExtraIncomes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="1dp" />
+</LinearLayout>
