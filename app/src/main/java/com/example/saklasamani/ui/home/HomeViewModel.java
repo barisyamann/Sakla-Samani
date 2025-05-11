@@ -4,16 +4,24 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.saklasamani.manager.SessionManager;
+import com.example.saklasamani.model.User;
+
 public class HomeViewModel extends ViewModel {
+    private final MutableLiveData<Double> budget = new MutableLiveData<>();
 
-    private final MutableLiveData<String> mText;
-
-    public HomeViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+    public LiveData<Double> getBudget() {
+        return budget;
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public void loadUserData() {
+        User user = SessionManager.getInstance().getUser();
+        if (user != null) {
+            budget.setValue(user.getBudget());
+        }
+    }
+
+    public void updateBudget(double newBudget) {
+        budget.setValue(newBudget);
     }
 }

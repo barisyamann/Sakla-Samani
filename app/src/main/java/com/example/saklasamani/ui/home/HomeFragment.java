@@ -20,14 +20,17 @@ import com.example.saklasamani.R;
 import com.example.saklasamani.data.UserDao;
 import com.example.saklasamani.model.ExtraIncome;
 
+import androidx.lifecycle.ViewModelProvider;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
+    private HomeViewModel homeViewModel;
     private RecyclerView recyclerView;
     private ExtraIncomeAdapter adapter;
-    private TextView tvIncome, tvTotalExtraIncome;
+    private TextView tvIncome, tvTotalExtraIncome, tvBudget;
     private Button btnAddExtraIncome;
     private UserDao userDao;
 
@@ -43,9 +46,11 @@ public class HomeFragment extends Fragment {
         recyclerView = root.findViewById(R.id.recyclerView);
         tvIncome = root.findViewById(R.id.tvIncome);
         tvTotalExtraIncome = root.findViewById(R.id.tvTotalExtraIncome);
+        tvBudget=root.findViewById(R.id.tvBudget);
         btnAddExtraIncome = root.findViewById(R.id.btnAddExtraIncome);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         if (MainActivity.currentUser.getExtraIncomes() == null)
             MainActivity.currentUser.setExtraIncomes(new ArrayList<>());
@@ -61,6 +66,15 @@ public class HomeFragment extends Fragment {
         updateIncomeViews();
 
         btnAddExtraIncome.setOnClickListener(view -> showAddIncomeDialog());
+
+        homeViewModel.getBudget().observe(getViewLifecycleOwner(), budget -> {
+            if (budget != null) {
+                tvBudget.setText("Bütçe: " + budget + "₺");
+            }
+        });
+
+        homeViewModel.loadUserData();
+
 
         return root;
     }

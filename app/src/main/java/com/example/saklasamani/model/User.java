@@ -11,6 +11,8 @@ public class User implements Serializable {
     private double income;
     private double budget;
     private List<ExtraIncome> extraIncomes;
+    private List <Harcama> harcamas;
+
 
     public User(String userName, String password, double income, double budget) {
         this.userName = userName;
@@ -18,6 +20,7 @@ public class User implements Serializable {
         this.income = income;
         this.budget=budget;
         this.extraIncomes = new ArrayList<>();
+        this.harcamas=new ArrayList<>();
     }
 
     public String getUserName() { return userName; }
@@ -49,6 +52,28 @@ public class User implements Serializable {
     public double getTotalExtraIncome() {
         double total = 0;
         for (ExtraIncome ei : extraIncomes) {
+            total += ei.getAmount();
+        }
+        return total;
+    }
+
+    public List<Harcama> getHarcama() { return harcamas; }
+
+    public void setHarcama(List<Harcama> harcamas) {
+        this.harcamas = harcamas;
+    }
+
+    public void addHarcama(double amount, String note) {
+        harcamas.add(new Harcama(amount, note));
+    }
+
+    public boolean removeHarcamaByNote(String note) {
+        return harcamas.removeIf(harcamas -> harcamas.getNote().equals(note));
+    }
+
+    public double getTotalHarcama() {
+        double total = 0;
+        for (Harcama ei : harcamas) {
             total += ei.getAmount();
         }
         return total;

@@ -24,6 +24,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "note TEXT, " +
                     "FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)";
 
+    private static final String CREATE_HARCAMAS_TABLE =
+            "CREATE TABLE harcamas (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "userName TEXT, " +
+                    "amount REAL, " +
+                    "note TEXT, " +
+                    "FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)";
+
+    private static final String CREATE_INVESTS_TABLE =
+            "CREATE TABLE invests (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "userName TEXT, " +
+                    "amount REAL, " +
+                    "note TEXT, " +
+                    "FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -32,12 +48,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_EXTRA_INCOME_TABLE);
+        db.execSQL(CREATE_HARCAMAS_TABLE);
+        db.execSQL(CREATE_INVESTS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS harcamas");
         db.execSQL("DROP TABLE IF EXISTS extra_income");
         db.execSQL("DROP TABLE IF EXISTS user");
+        db.execSQL("DROP TABLE IF EXISTS invests");
         onCreate(db);
     }
 }

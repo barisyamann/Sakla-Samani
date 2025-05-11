@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.saklasamani.data.UserDao;
+import com.example.saklasamani.manager.SessionManager;
 import com.example.saklasamani.model.User;
 
 public class LoginActivity extends AppCompatActivity {
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 User user = userDao.login(userName, password);
                 if (user != null) {
+                    SessionManager.getInstance().setUser(user);
                     Toast.makeText(LoginActivity.this, "Giriş başarılı!", Toast.LENGTH_SHORT).show();
                     // User objesini MainActivity'ye gönderiyoruz
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
