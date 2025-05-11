@@ -1,136 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragmentYatirimRoot"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <!-- Yatırım Türü -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Yatırım Türü"
-        android:textStyle="bold" />
-
-    <Spinner
-        android:id="@+id/spinnerYatirimTuru"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_above="@+id/layoutSabitAlanlar"
+        android:layout_alignParentTop="true">
 
-    <!-- Ortak Alanlar -->
-    <EditText
-        android:id="@+id/editTextYatirimIsmi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Yatırım İsmi" />
+        <LinearLayout
+            android:id="@+id/fragmentYatirimRoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
 
-    <EditText
-        android:id="@+id/editTextAdet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Adet"
-        android:inputType="numberDecimal" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewYatirimlar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp" />
 
-    <EditText
-        android:id="@+id/editTextBirimFiyat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Birim Fiyat (₺)"
-        android:inputType="numberDecimal" />
+            <TextView
+                android:id="@+id/textViewYatirimTuruLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Yatırım Türü"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
-    <!-- Coin -->
+            <Spinner
+                android:id="@+id/spinnerYatirimTuru"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:id="@+id/layoutDoviz"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Döviz Cinsi"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinnerDovizCinsi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutMaden"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Maden Türü"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinnerMadenTuru"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/editTextYatirimIsmi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Yatırım İsmi"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/editTextAdet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Adet"
+                android:inputType="numberDecimal"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/editTextBirimFiyat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Birim Fiyat"
+                android:inputType="numberDecimal"
+                android:visibility="gone"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:id="@+id/layoutCoin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/editTextCoinSembol"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Coin Sembolü" />
+
+                <EditText
+                    android:id="@+id/editTextCoinTipi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Coin Tipi" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutHisse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/editTextSirketAdi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Şirket Adı" />
+
+                <EditText
+                    android:id="@+id/editTextSembol"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Hisse Sembolü" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonHesapla"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Yatırımı Kaydet"
+                android:visibility="gone"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="16dp" />
+        </LinearLayout>
+    </ScrollView>
+
     <LinearLayout
-        android:id="@+id/layoutCoin"
+        android:id="@+id/layoutSabitAlanlar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="56dp"
 
-        <EditText
-            android:id="@+id/editTextCoinSembol"
+        android:background="@android:color/transparent"
+        android:padding="8dp">
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Coin Sembolü (Örn: BTC)" />
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="#ADD8E6"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
-        <EditText
-            android:id="@+id/editTextCoinTipi"
+            <TextView
+                android:id="@+id/textViewToplamTutar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="Toplam Tutar: 0.00 ₺"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="start"/>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/buttonYeniYatirimEkle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Coin Tipi (Örn: Kripto)" />
+            android:text="Yeni Yatırım Ekle" />
     </LinearLayout>
 
-    <!-- Hisse -->
-    <LinearLayout
-        android:id="@+id/layoutHisse"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <EditText
-            android:id="@+id/editTextSirketAdi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Şirket Adı (Örn: ASELSAN)" />
-
-        <EditText
-            android:id="@+id/editTextSembol"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Sembol (Örn: ASELS)" />
-    </LinearLayout>
-
-    <!-- Döviz -->
-    <LinearLayout
-        android:id="@+id/layoutDoviz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <Spinner
-            android:id="@+id/spinnerDovizCinsi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <!-- Maden -->
-    <LinearLayout
-        android:id="@+id/layoutMaden"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <Spinner
-            android:id="@+id/spinnerMadenTuru"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <!-- Hesapla Butonu -->
-    <Button
-        android:id="@+id/buttonHesapla"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Yatırım Tutarını Hesapla" />
-
-    <TextView
-        android:id="@+id/textViewSonuc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Toplam Tutar: -"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:paddingTop="12dp" />
-
-    <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewYatirimlar"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="12dp" />
-
-</LinearLayout>
+</RelativeLayout>
