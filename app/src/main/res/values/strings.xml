@@ -18,6 +18,16 @@
     <string name="hesapla">Hesapla</string>
     <string name="sonuc">Sonuç</string>
     <string name="yatirim_turu">Yatırım Türü</string>
+    <string name="yatirimi_sil">Yatırımı Sil</string>
+    <string name="yatirimi_silmek_istediginize_emin_misiniz">Bu yatırımı silmek istediğinizden emin misiniz?</string>
+    <string name="evet">Evet</string>
+    <string name="hayir">Hayır</string>
+    <string name="yatirim_silindi">Yatırım silindi</string>
+    <string name="yatirimi_guncelle">Yatırımı Güncelle</string>
+    <string name="yatirimi_kaydet">Yatırımı Kaydet</string>
+    <string name="lutfen_gerekli_alanlari_doldurun">Lütfen gerekli alanları doldurun</string>
+    <string name="gecersiz_yatirim_turu">Geçersiz yatırım türü!</string>
+    <string name="gecerli_sayi_girin">Lütfen geçerli sayı girin</string>
 
     <string-array name="maden_turleri">
         <item>Altın</item>

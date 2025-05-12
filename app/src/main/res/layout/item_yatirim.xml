@@ -7,37 +7,71 @@
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/textViewYatirimIsmi"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/linearLayoutBilgiler">
+
+            <TextView
+                android:id="@+id/textViewYatirimIsmi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yatırım Adı"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewYatirimDetay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Adet: 1.0, Birim Fiyat: 100.00 TL"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textViewYatirimTutari"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Toplam Tutar: 100.00 TL"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Yatırım Adı"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
 
-        <TextView
-            android:id="@+id/textViewYatirimDetay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Adet: 1.0, Birim Fiyat: 100.00 TL"
-            android:textSize="14sp" />
+            <ImageView
+                android:id="@+id/imageViewSil"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_delete"
+                android:clickable="true"
+                android:focusable="true" />
 
-        <TextView
-            android:id="@+id/textViewYatirimTutari"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Toplam Tutar: 100.00 TL"
-            android:textSize="16sp"
-            android:textStyle="italic" />
+            <ImageView
+                android:id="@+id/imageViewDuzenle"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_edit"
+                android:clickable="true"
+                android:focusable="true" />
 
-    </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

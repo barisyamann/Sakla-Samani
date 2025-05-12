@@ -22,6 +22,11 @@ public class YatirimManager {
         yatirimListesi.add(yatirim);
     }
 
+    public void yatirimSil(int position) {
+        if (position >= 0 && position < yatirimListesi.size()) {
+            yatirimListesi.remove(position);
+        }
+    }
     public double toplamYatirimTutari() {
         double toplam = 0;
         for (Yatirim y : yatirimListesi) {
@@ -34,39 +39,3 @@ public class YatirimManager {
         return yatirimListesi;
     }
 }
-
-/*public class YatirimManager {
-
-    private List<Yatirim> yatirimListesi;
-
-    public YatirimManager() {
-        this.yatirimListesi = new ArrayList<>();
-    }
-
-    // Yatırım ekleme
-    public void yatirimEkle(Yatirim yatirim) {
-        yatirimListesi.add(yatirim);
-    }
-
-    // Tüm yatırımları listeleme (şimdilik gerek yok ama dursun)
-    public void tumYatirimlariGoster() {
-        for (Yatirim y : yatirimListesi) {
-            y.bilgiGoster();
-            System.out.println("-----");
-        }
-    }
-
-    // Toplam yatırım tutarını hesaplama
-    public double toplamYatirimTutari() {
-        double toplam = 0;
-        for (Yatirim y : yatirimListesi) {
-            toplam += y.yatirimTutariHesapla();
-        }
-        return toplam;
-    }
-
-    // Listeye erişim (UI'da gösterilecekse)
-    public List<Yatirim> getYatirimListesi() {
-        return yatirimListesi;
-    }
-}*/
