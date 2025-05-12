@@ -5,40 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "app_database.db";
-    private static final int DATABASE_VERSION = 2;
-
-    private static final String CREATE_USER_TABLE =
-            "CREATE TABLE user (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "userName TEXT, " +
-                    "password TEXT, " +
-                    "income REAL, " +
-                    "budget REAL)";
-
-    private static final String CREATE_EXTRA_INCOME_TABLE =
-            "CREATE TABLE extra_income (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "userName TEXT, " +
-                    "amount REAL, " +
-                    "note TEXT, " +
-                    "FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)";
-
-    private static final String CREATE_HARCAMAS_TABLE =
-            "CREATE TABLE harcamas (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "userName TEXT, " +
-                    "amount REAL, " +
-                    "note TEXT, " +
-                    "FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)";
-
-    private static final String CREATE_INVESTS_TABLE =
-            "CREATE TABLE invests (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "userName TEXT, " +
-                    "amount REAL, " +
-                    "note TEXT, " +
-                    "FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)";
+    private static final String DATABASE_NAME = "saklasamani.db";
+    private static final int DATABASE_VERSION = 1;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -46,18 +14,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_USER_TABLE);
-        db.execSQL(CREATE_EXTRA_INCOME_TABLE);
-        db.execSQL(CREATE_HARCAMAS_TABLE);
-        db.execSQL(CREATE_INVESTS_TABLE);
+        db.execSQL(
+                "CREATE TABLE user (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "userName TEXT UNIQUE NOT NULL," +
+                        "password TEXT NOT NULL," +
+                        "income REAL DEFAULT 0," +
+                        "budget REAL DEFAULT 0)"
+        );
+
+        db.execSQL(
+                "CREATE TABLE extra_income (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "userName TEXT NOT NULL," +
+                        "amount REAL NOT NULL," +
+                        "note TEXT," +
+                        "FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)"
+        );
+
+        db.execSQL(
+                "CREATE TABLE harcama (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "userName TEXT NOT NULL," +
+                        "amount REAL NOT NULL," +
+                        "note TEXT," +
+                        "FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)"
+        );
+
+        db.execSQL(
+                "CREATE TABLE invest (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "userName TEXT NOT NULL," +
+                        "amount REAL NOT NULL," +
+                        "note TEXT," +
+                        "FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)"
+        );
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS harcamas");
+        db.execSQL("DROP TABLE IF EXISTS invest");
+        db.execSQL("DROP TABLE IF EXISTS harcama");
         db.execSQL("DROP TABLE IF EXISTS extra_income");
         db.execSQL("DROP TABLE IF EXISTS user");
-        db.execSQL("DROP TABLE IF EXISTS invests");
         onCreate(db);
     }
 }

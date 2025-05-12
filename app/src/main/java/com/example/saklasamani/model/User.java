@@ -1,81 +1,72 @@
 package com.example.saklasamani.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class User implements Serializable {
-
+    private int id;
     private String userName;
     private String password;
     private double income;
     private double budget;
-    private List<ExtraIncome> extraIncomes;
-    private List <Harcama> harcamas;
 
+    public User(int id, String userName, String password, double income, double budget) {
+        this.id = id;
+        this.userName = userName;
+        this.password = password;
+        this.income = income;
+        this.budget = budget;
+    }
 
     public User(String userName, String password, double income, double budget) {
         this.userName = userName;
         this.password = password;
         this.income = income;
-        this.budget=budget;
-        this.extraIncomes = new ArrayList<>();
-        this.harcamas=new ArrayList<>();
+        this.budget = budget;
     }
 
-    public String getUserName() { return userName; }
-    public void setUserName(String userName) { this.userName = userName; }
-
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
-    public double getIncome() { return income; }
-    public void setIncome(double income) { this.income = income; }
-
-    public double getBudget() { return budget; }
-    public void setBudget(double budget) { this.budget = budget; }
-
-    public List<ExtraIncome> getExtraIncomes() { return extraIncomes; }
-
-    public void setExtraIncomes(List<ExtraIncome> extraIncomes) {
-        this.extraIncomes = extraIncomes;
+    public User(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
     }
 
-    public void addExtraIncome(double amount, String note) {
-        extraIncomes.add(new ExtraIncome(amount, note));
+    // Getter - Setter'lar
+    public int getId() {
+        return id;
     }
 
-    public boolean removeExtraIncomeByNote(String note) {
-        return extraIncomes.removeIf(income -> income.getNote().equals(note));
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public double getTotalExtraIncome() {
-        double total = 0;
-        for (ExtraIncome ei : extraIncomes) {
-            total += ei.getAmount();
-        }
-        return total;
+    public String getUserName() {
+        return userName;
     }
 
-    public List<Harcama> getHarcama() { return harcamas; }
-
-    public void setHarcama(List<Harcama> harcamas) {
-        this.harcamas = harcamas;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public void addHarcama(double amount, String note) {
-        harcamas.add(new Harcama(amount, note));
+    public String getPassword() {
+        return password;
     }
 
-    public boolean removeHarcamaByNote(String note) {
-        return harcamas.removeIf(harcamas -> harcamas.getNote().equals(note));
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public double getTotalHarcama() {
-        double total = 0;
-        for (Harcama ei : harcamas) {
-            total += ei.getAmount();
-        }
-        return total;
+    public double getIncome() {
+        return income;
+    }
+
+    public void setIncome(double income) {
+        this.income = income;
+    }
+
+    public double getBudget() {
+        return budget;
+    }
+
+    public void setBudget(double budget) {
+        this.budget = budget;
     }
 }
