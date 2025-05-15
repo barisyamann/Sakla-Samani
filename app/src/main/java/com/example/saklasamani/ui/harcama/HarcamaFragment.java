@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.saklasamani.R;
@@ -28,10 +30,20 @@ public class HarcamaFragment extends Fragment {
     private User user;
     private String currentUserName;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_harcama, container, false);
+
+        Spinner spinnerCategory = view.findViewById(R.id.spinnerCategory);
+        String[] categories = {"Market", "Ulaşım", "Fatura", "Eğlence", "Sağlık", "Diğer"};
+
+        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(
+                requireContext(), android.R.layout.simple_spinner_item, categories);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(adapterSpinner);
 
         recyclerViewHarcama = view.findViewById(R.id.recyclerViewHarcama);
         recyclerViewHarcama.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -73,10 +85,13 @@ public class HarcamaFragment extends Fragment {
             try {
                 double amount = Double.parseDouble(edtAmount.getText().toString());
                 String note = edtNote.getText().toString();
-                viewModel.addHarcama(currentUserName, amount, note);
+                String category = spinnerCategory.getSelectedItem().toString(); // seçilen kategori
+
+                viewModel.addHarcama(currentUserName, amount,  category, note);
 
                 edtAmount.setText("");
                 edtNote.setText("");
+                spinnerCategory.setSelection(0); // Spinner'ı sıfırla
 
             } catch (NumberFormatException e) {
                 Log.e("HarcamaFragment", "Geçersiz sayı formatı", e);

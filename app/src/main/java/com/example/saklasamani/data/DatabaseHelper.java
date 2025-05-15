@@ -37,6 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "userName TEXT NOT NULL," +
                         "amount REAL NOT NULL," +
+                        "category TEXT," +
                         "note TEXT," +
                         "FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)"
         );

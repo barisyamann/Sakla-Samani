@@ -14,41 +14,45 @@ import com.example.saklasamani.model.Harcama;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HarcamaAdapter extends RecyclerView.Adapter<HarcamaAdapter.ViewHolder> {
+public class HarcamaAdapter extends RecyclerView.Adapter<HarcamaAdapter.HarcamaViewHolder> {
 
     private List<Harcama> harcamaList = new ArrayList<>();
 
-    public void setHarcamalar(List<Harcama> list) {
-        this.harcamaList = list;
-        notifyDataSetChanged();
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textAmount, textNote;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            textAmount = itemView.findViewById(R.id.textAmount);
-            textNote = itemView.findViewById(R.id.textNote);
-        }
-    }
-
     @NonNull
     @Override
-    public HarcamaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.harcama_item, parent, false);
-        return new ViewHolder(v);
+    public HarcamaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.harcama_item, parent, false);
+        return new HarcamaViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HarcamaViewHolder holder, int position) {
         Harcama harcama = harcamaList.get(position);
         holder.textAmount.setText(String.format("Tutar: %.2f ₺", harcama.getAmount()));
+
+        holder.textCategory.setText("Kategori: " + harcama.getCategory());
         holder.textNote.setText("Not: " + harcama.getNote());
     }
 
     @Override
     public int getItemCount() {
         return harcamaList.size();
+    }
+
+    public void setHarcamalar(List<Harcama> list) {
+        this.harcamaList = list;
+        notifyDataSetChanged();
+    }
+
+    public static class HarcamaViewHolder extends RecyclerView.ViewHolder {
+        TextView textAmount, textNote, textCategory;
+
+        public HarcamaViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textAmount = itemView.findViewById(R.id.textAmount);
+            textNote = itemView.findViewById(R.id.textNote);
+            textCategory = itemView.findViewById(R.id.textCategory);
+        }
     }
 }

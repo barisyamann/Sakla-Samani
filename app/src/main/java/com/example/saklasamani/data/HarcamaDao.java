@@ -18,17 +18,20 @@ public class HarcamaDao {
         dbHelper = new DatabaseHelper(context);
     }
 
-    public void addHarcama(String userName, double amount, String note) {
+    public void addHarcama(String userName, double amount, String category, String note) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put("userName", userName);
         values.put("amount", amount);
+        values.put("category", category); // yeni alan
         values.put("note", note);
+
 
         db.insert("harcama", null, values);
         db.close();
     }
+
 
     public boolean deleteHarcama(String userName, String note) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -42,15 +45,16 @@ public class HarcamaDao {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.query("harcama",
-                new String[]{"amount", "note"},
+                new String[]{"amount", "category","note"},
                 "userName = ?",
                 new String[]{userName},
                 null, null, null);
 
         while (cursor.moveToNext()) {
             double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
+            String category= cursor.getString(cursor.getColumnIndexOrThrow("category"));
             String note = cursor.getString(cursor.getColumnIndexOrThrow("note"));
-            list.add(new Harcama(amount, note));
+            list.add(new Harcama(amount, category, note));
         }
 
         cursor.close();

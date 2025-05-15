@@ -50,11 +50,11 @@ public class HarcamaViewModel extends AndroidViewModel {
         });
     }
 
-    public void addHarcama(String userName, double amount, String note) {
+    public void addHarcama(String userName, double amount, String category,String note) {
         Executors.newSingleThreadExecutor().execute(() -> {
 
             // Harcamayı ekle
-            harcamaDao.addHarcama(userName, amount, note);
+            harcamaDao.addHarcama(userName, amount, category,note);
 
             // Güncel harcama listesini al
             List<Harcama> updatedList = harcamaDao.getHarcamalar(userName);

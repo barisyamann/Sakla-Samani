@@ -5,11 +5,15 @@ import java.io.Serializable;
 public class Harcama implements Serializable {
     private double amount;
     private String note;
+    private String category;
 
-    public Harcama(double amount, String note) {
+    public Harcama(double amount, String category, String note) {
         this.amount = amount;
         this.note = note;
+        this.category = category;
     }
+
+
 
     public double getAmount() {
         return amount;
@@ -26,4 +30,7 @@ public class Harcama implements Serializable {
     public void setNote(String note) {
         this.note = note;
     }
+
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 }
