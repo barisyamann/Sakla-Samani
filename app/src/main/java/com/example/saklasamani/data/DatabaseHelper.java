@@ -8,6 +8,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "saklasamani.db";
     private static final int DATABASE_VERSION = 1;
 
+    private static DatabaseHelper instance;
+
+    // Singleton pattern
+    public static synchronized DatabaseHelper getInstance(Context context) {
+        if (instance == null) {
+            // Application context kullanıyoruz, böylece leak olmaz
+            instance = new DatabaseHelper(context.getApplicationContext());
+        }
+        return instance;
+    }
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }

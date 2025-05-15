@@ -37,7 +37,6 @@
             android:text="Harcama Ekle"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Toplam harcama -->
         <TextView
             android:id="@+id/text_total_harcama"
             android:layout_width="wrap_content"
@@ -45,8 +44,24 @@
             android:text="Toplam Harcama: 0 ₺"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_gravity="center_horizontal"
-            android:paddingBottom="8dp"/>
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/text_kategori_detay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kategori Harcamaları:"
+            android:textSize="16sp"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/text_secili_kategori_harcama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Seçili kategori harcaması:"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:padding="8dp" />
 
         <Spinner
             android:id="@+id/spinnerCategory"

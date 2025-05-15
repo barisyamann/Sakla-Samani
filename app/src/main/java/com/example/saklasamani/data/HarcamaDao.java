@@ -12,10 +12,10 @@ import java.util.List;
 
 public class HarcamaDao {
 
-    private DatabaseHelper dbHelper;
+    private final DatabaseHelper dbHelper;
 
     public HarcamaDao(Context context) {
-        dbHelper = new DatabaseHelper(context);
+        dbHelper = DatabaseHelper.getInstance(context);
     }
 
     public void addHarcama(String userName, double amount, String category, String note) {
@@ -24,19 +24,19 @@ public class HarcamaDao {
         ContentValues values = new ContentValues();
         values.put("userName", userName);
         values.put("amount", amount);
-        values.put("category", category); // yeni alan
+        values.put("category", category);
         values.put("note", note);
 
-
         db.insert("harcama", null, values);
-        db.close();
-    }
 
+        // db.close() kaldırıldı
+    }
 
     public boolean deleteHarcama(String userName, String note) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         int rows = db.delete("harcama", "userName = ? AND note = ?", new String[]{userName, note});
-        db.close();
+
+        // db.close() kaldırıldı
         return rows > 0;
     }
 
@@ -45,20 +45,20 @@ public class HarcamaDao {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.query("harcama",
-                new String[]{"amount", "category","note"},
+                new String[]{"amount", "category", "note"},
                 "userName = ?",
                 new String[]{userName},
                 null, null, null);
 
         while (cursor.moveToNext()) {
             double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
-            String category= cursor.getString(cursor.getColumnIndexOrThrow("category"));
+            String category = cursor.getString(cursor.getColumnIndexOrThrow("category"));
             String note = cursor.getString(cursor.getColumnIndexOrThrow("note"));
             list.add(new Harcama(amount, category, note));
         }
 
         cursor.close();
-        db.close();
+        // db.close() kaldırıldı
         return list;
     }
 }
