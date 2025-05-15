@@ -48,6 +48,13 @@
             android:layout_gravity="center_horizontal"
             android:paddingBottom="8dp"/>
 
+        <Spinner
+            android:id="@+id/spinnerCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="8dp"/>
+
         <!-- Harcama listesi -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewHarcama"
