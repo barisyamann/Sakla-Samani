@@ -26,13 +26,13 @@ public class HarcamaDao {
         values.put("amount", amount);
         values.put("note", note);
 
-        db.insert("harcamas", null, values);
+        db.insert("harcama", null, values);
         db.close();
     }
 
     public boolean deleteHarcama(String userName, String note) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        int rows = db.delete("harcamas", "userName = ? AND note = ?", new String[]{userName, note});
+        int rows = db.delete("harcama", "userName = ? AND note = ?", new String[]{userName, note});
         db.close();
         return rows > 0;
     }

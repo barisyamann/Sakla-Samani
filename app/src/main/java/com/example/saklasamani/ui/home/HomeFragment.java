@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,7 +20,11 @@ public class HomeFragment extends Fragment {
     private TextView tvIncome, tvBudget;
     private UserDao userDao;
 
-    public HomeFragment() {}
+
+    User currentUser = SessionManager.getInstance().getUser();
+    public HomeFragment(
+
+    ) {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,10 +38,8 @@ public class HomeFragment extends Fragment {
 
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        // SessionManager üzerinden currentUser'ı alıyoruz
-        User currentUser = SessionManager.getInstance().getUser();
-
         updateIncomeViews();
+        updateBudgetView();
 
         homeViewModel.getBudget().observe(getViewLifecycleOwner(), budget -> {
             if (budget != null) {
@@ -52,8 +53,16 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateIncomeViews() {
-        User currentUser = SessionManager.getInstance().getUser();
-        double income = currentUser.getIncome();
-        tvIncome.setText("Gelir: " + income + "₺");
+        if (currentUser != null) {
+            double income = currentUser.getIncome();
+            tvIncome.setText("Gelir: " + income + "₺");
+        }
+    }
+
+    private void updateBudgetView() {
+        if (currentUser != null) {
+            double budget = currentUser.getBudget();
+            tvBudget.setText("Bütçe: " + budget + "₺");
+        }
     }
 }

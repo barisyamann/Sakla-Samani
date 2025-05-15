@@ -13,6 +13,7 @@ import com.example.saklasamani.MainActivity;
 import com.example.saklasamani.R;
 import com.example.saklasamani.data.ExtraIncomeDao;
 import com.example.saklasamani.data.UserDao;
+import com.example.saklasamani.manager.SessionManager;
 import com.example.saklasamani.model.ExtraIncome;
 import com.example.saklasamani.model.User;
 
@@ -45,7 +46,7 @@ public class GelirFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // User ve DAO nesnelerini alıyoruz
-        user = MainActivity.currentUser;
+        user = SessionManager.getInstance().getUser();
         userDao = new UserDao(requireContext());
         extraIncomeDao = new ExtraIncomeDao(requireContext());
 

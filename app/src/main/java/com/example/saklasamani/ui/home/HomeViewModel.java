@@ -21,7 +21,4 @@ public class HomeViewModel extends ViewModel {
         }
     }
 
-    public void updateBudget(double newBudget) {
-        budget.setValue(newBudget);
-    }
 }
