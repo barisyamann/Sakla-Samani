@@ -30,4 +30,8 @@ public class Doviz extends Yatirim {
     public void setDovizCinsi(String dovizCinsi) {
         this.dovizCinsi = dovizCinsi;
     }
+    @Override
+    public String getYatirimTuru() {
+        return "Doviz";
+    }
 }

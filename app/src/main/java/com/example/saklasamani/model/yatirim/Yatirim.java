@@ -38,4 +38,8 @@ public abstract class Yatirim implements YatirimInterface
     public void setYatirimBirimFiyati(double yatirimBirimFiyati) {
         this.yatirimBirimFiyati = yatirimBirimFiyati;
     }
+    public double getYatirimTutari() {
+        return yatirimAdeti * yatirimBirimFiyati;
+    }
+    public abstract String getYatirimTuru();
 }

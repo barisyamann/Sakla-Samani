@@ -1,6 +1,7 @@
 package com.example.saklasamani.ui.yatirim;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.saklasamani.R;
+import com.example.saklasamani.manager.SessionManager;
 import com.example.saklasamani.manager.YatirimManager;
+import com.example.saklasamani.model.User;
 import com.example.saklasamani.model.yatirim.Borsa;
 import com.example.saklasamani.model.yatirim.Coin;
 import com.example.saklasamani.model.yatirim.DegerliMaden;
@@ -19,6 +22,7 @@ import com.example.saklasamani.model.yatirim.Doviz;
 import com.example.saklasamani.model.yatirim.Yatirim;
 import java.util.List;
 import java.util.Locale;
+import com.example.saklasamani.model.User;
 
 public class YatirimFragment extends Fragment implements YatirimAdapter.OnYatirimClickListener {
 
@@ -32,11 +36,16 @@ public class YatirimFragment extends Fragment implements YatirimAdapter.OnYatiri
     private YatirimAdapter yatirimAdapter;
     private YatirimManager yatirimManager;
     private boolean formGorunur = false;
+    Context context;
+    User currentUser;
     private int duzenlenenYatirimPozisyonu = -1; // Düzenlenen yatırımın pozisyonunu tutar
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_yatirim, container, false);
+        context = getContext();
+        SessionManager sessionManager = SessionManager.getInstance();
+        currentUser = sessionManager.getUser();
 
         // Bağlantılar
         buttonYeniYatirimEkle = root.findViewById(R.id.buttonYeniYatirimEkle);
@@ -60,7 +69,8 @@ public class YatirimFragment extends Fragment implements YatirimAdapter.OnYatiri
         textViewToplamTutar = root.findViewById(R.id.textViewToplamTutar);
         textViewYatirimTuruLabel = root.findViewById(R.id.textViewYatirimTuruLabel);
 
-        yatirimManager = YatirimManager.getInstance(); // Singleton örneğini al
+
+        yatirimManager = YatirimManager.getInstance(context, currentUser.getUserName()); // Singleton örneğini al
         yatirimAdapter = new YatirimAdapter(yatirimManager.getYatirimListesi(), this); // 'this' ile listener'ı fragment'a bağla
         recyclerViewYatirimlar.setAdapter(yatirimAdapter);
 
@@ -92,12 +102,55 @@ public class YatirimFragment extends Fragment implements YatirimAdapter.OnYatiri
         });
 
         btnHesapla.setOnClickListener(v -> {
-            if (duzenlenenYatirimPozisyonu != -1) {
-                duzenleYatirim();
-            } else {
-                kaydetYatirim();
+            String yatirimIsmi = etYatirimIsmi.getText().toString().trim();
+            double adet = Double.parseDouble(etAdet.getText().toString());
+            double birimFiyat = Double.parseDouble(etBirimFiyat.getText().toString());
+            String secilenTur = spinnerYatirimTuru.getSelectedItem().toString();
+
+            Yatirim yeniYatirim = null;
+
+            switch (secilenTur) {
+                case "Coin":
+                    String sembol = etCoinSembol.getText().toString().trim();
+                    String tip = etCoinTipi.getText().toString().trim();
+                    yeniYatirim = new Coin(yatirimIsmi, adet, birimFiyat, sembol, tip);
+                    break;
+                case "Hisse":
+                    String sirket = etSirketAdi.getText().toString().trim();
+                    String hisseSembol = etHisseSembol.getText().toString().trim();
+                    yeniYatirim = new Borsa(yatirimIsmi, adet, birimFiyat, sirket, hisseSembol);
+                    break;
+                case "Döviz":
+                    String dovizCinsi = spinnerDovizCinsi.getSelectedItem().toString();
+                    yeniYatirim = new Doviz(yatirimIsmi, adet, birimFiyat, dovizCinsi);
+                    break;
+                case "Maden":
+                    String madenTuru = spinnerMadenTuru.getSelectedItem().toString();
+                    yeniYatirim = new DegerliMaden(yatirimIsmi, adet, birimFiyat, madenTuru);
+                    break;
+            }
+
+            if (yeniYatirim != null) {
+                if (duzenlenenYatirimPozisyonu != -1) {
+                    // Düzenleme yapılıyorsa
+                    //yatirimManager.guncelleYatirim(duzenlenenYatirimPozisyonu, yeniYatirim);
+                    Toast.makeText(context, "Yatırım güncellendi", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Yeni yatırım ekleniyorsa
+                    yatirimManager.yatirimEkle(yeniYatirim);
+                    yatirimAdapter.setYatirimListesi(yatirimManager.getYatirimListesi());
+                    Toast.makeText(context, "Yeni yatırım eklendi", Toast.LENGTH_SHORT).show();
+                }
+
+                // Formu sıfırla ve gizle
+                duzenlenenYatirimPozisyonu = -1;
+                formGorunur = false;
+                guncelleFormGorunurlugu();
+                yatirimAdapter.setYatirimListesi(yatirimManager.getYatirimListesi());
+                btnHesapla.setText("Yatırımı Kaydet");
             }
         });
+
 
         // Başlangıçta toplam tutarı göster
         guncelleToplamTutar();
@@ -338,43 +391,38 @@ public class YatirimFragment extends Fragment implements YatirimAdapter.OnYatiri
 
     @Override
     public void onDuzenleClick(int position) {
-        Yatirim yatirim = yatirimManager.getYatirimListesi().get(position);
         duzenlenenYatirimPozisyonu = position;
-
-        etYatirimIsmi.setText(yatirim.getYatirimIsmi());
-        etAdet.setText(String.valueOf(yatirim.getYatirimAdeti()));
-        etBirimFiyat.setText(String.valueOf(yatirim.getYatirimBirimFiyati()));
-
-        String yatirimTuru = "";
-        if (yatirim instanceof Coin) {
-            yatirimTuru = "Coin";
-            spinnerYatirimTuru.setSelection(0);
-            Coin coin = (Coin) yatirim;
-            etCoinSembol.setText(coin.getCoinSembol());
-            etCoinTipi.setText(coin.getCoinTipi());
-        } else if (yatirim instanceof Borsa) {
-            yatirimTuru = "Hisse";
-            spinnerYatirimTuru.setSelection(1);
-            Borsa borsa = (Borsa) yatirim;
-            etSirketAdi.setText(borsa.getSirketAdi());
-            etHisseSembol.setText(borsa.getSembol());
-        } else if (yatirim instanceof Doviz) {
-            yatirimTuru = "Döviz";
-            int index = getIndex(spinnerYatirimTuru, yatirimTuru);
-            if (index != -1) spinnerYatirimTuru.setSelection(index);
-            spinnerDovizCinsi.setSelection(getIndex(spinnerDovizCinsi, ((Doviz) yatirim).getDovizCinsi()));
-        } else if (yatirim instanceof DegerliMaden) {
-            yatirimTuru = "Maden";
-            int index = getIndex(spinnerYatirimTuru, yatirimTuru);
-            if (index != -1) spinnerYatirimTuru.setSelection(index);
-            spinnerMadenTuru.setSelection(getIndex(spinnerMadenTuru, ((DegerliMaden) yatirim).getMadenTuru()));
-        }
-
         formGorunur = true;
         guncelleFormGorunurlugu();
-        // Düzenleme modunda doğru alanların görünmesi için bu metodu çağırın
-        guncelleGirisAlanlari(yatirimTuru);
-        btnHesapla.setText(R.string.yatirimi_guncelle);
+
+        Yatirim duzenlenecekYatirim = yatirimManager.getYatirimListesi().get(position);
+
+        etYatirimIsmi.setText(duzenlenecekYatirim.getYatirimIsmi());
+        etAdet.setText(String.valueOf(duzenlenecekYatirim.getYatirimAdeti()));
+        etBirimFiyat.setText(String.valueOf(duzenlenecekYatirim.getYatirimBirimFiyati()));
+
+        // Spinner'ı ve özel alanları doldur
+        if (duzenlenecekYatirim instanceof Coin) {
+            spinnerYatirimTuru.setSelection(0); // Coin
+            Coin coin = (Coin) duzenlenecekYatirim;
+            etCoinSembol.setText(coin.getCoinSembol());
+            etCoinTipi.setText(coin.getCoinTipi());
+        } else if (duzenlenecekYatirim instanceof Borsa) {
+            spinnerYatirimTuru.setSelection(1); // Hisse
+            Borsa borsa = (Borsa) duzenlenecekYatirim;
+            etSirketAdi.setText(borsa.getSirketAdi());
+            etHisseSembol.setText(borsa.getSembol());
+        } else if (duzenlenecekYatirim instanceof Doviz) {
+            spinnerYatirimTuru.setSelection(2); // Döviz
+            Doviz doviz = (Doviz) duzenlenecekYatirim;
+            spinnerDovizCinsi.setSelection(((ArrayAdapter<String>) spinnerDovizCinsi.getAdapter()).getPosition(doviz.getDovizCinsi()));
+        } else if (duzenlenecekYatirim instanceof DegerliMaden) {
+            spinnerYatirimTuru.setSelection(3); // Maden
+            DegerliMaden maden = (DegerliMaden) duzenlenecekYatirim;
+            spinnerMadenTuru.setSelection(((ArrayAdapter<String>) spinnerMadenTuru.getAdapter()).getPosition(maden.getMadenTuru()));
+        }
+
+        btnHesapla.setText("Güncelle"); // Buton metnini değiştir
     }
 
     private int getIndex(Spinner spinner, String value) {
