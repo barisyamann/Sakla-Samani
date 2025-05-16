@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log; // Hata ayıklama için Log sınıfını ekledik
 
+import com.example.saklasamani.model.User;
 import com.example.saklasamani.model.yatirim.Yatirim;
 import com.example.saklasamani.model.yatirim.DegerliMaden;
 import com.example.saklasamani.model.yatirim.Doviz;
@@ -45,14 +46,26 @@ public class YatirimDao {
     }
 
     public long addYatirim(Yatirim yatirim, int userId) {
+        User user = userDao.getUserById(userId);
+        if (user == null) {
+            Log.e(TAG, "Kullanıcı bulunamadı. ID: " + userId);
+            return -1;
+        }
+        if (user.getBudget() < yatirim.yatirimTutariHesapla()) {
+            Log.e(TAG, "Yetersiz bütçe ile yatırım eklenemez.");
+            return -1;
+        }
+
         ContentValues values = new ContentValues();
         values.put(COLUMN_YATIRIM_ISMI, yatirim.getYatirimIsmi());
         values.put(COLUMN_YATIRIM_ADETI, yatirim.getYatirimAdeti());
         values.put(COLUMN_YATIRIM_BIRIM_FIYATI, yatirim.getYatirimBirimFiyati());
         values.put(COLUMN_YATIRIM_TURU, yatirim.getClass().getSimpleName());
         values.put(COLUMN_USER_ID, userId);
+        values.put("userName", user.getUserName());  // BURASI ÖNEMLİ
+        values.put("amount", yatirim.yatirimTutariHesapla());
 
-        // Türe özel bilgileri ekle
+        // Türe özel bilgiler...
         if (yatirim instanceof Doviz) {
             values.put(COLUMN_DOVIZ_CINSI, ((Doviz) yatirim).getDovizCinsi());
         } else if (yatirim instanceof DegerliMaden) {
@@ -65,10 +78,13 @@ public class YatirimDao {
             values.put(COLUMN_COIN_TIPI, ((Coin) yatirim).getCoinTipi());
         }
 
-        long id = db.insert("yatirimlar", null, values);
+        long id = db.insert("invest", null, values);
         if (id != -1) {
             Log.i(TAG, "Yatırım başarıyla eklendi. ID: " + id);
-           // userDao.decreaseBudget(userId, yatirim.yatirimTutariHesapla());
+            boolean updated = userDao.decreaseBudget(userId, yatirim.yatirimTutariHesapla());
+            if (!updated) {
+                Log.w(TAG, "Bütçe güncellenemedi!");
+            }
             return id;
         } else {
             Log.e(TAG, "Yatırım eklenirken hata oluştu.");
@@ -76,13 +92,14 @@ public class YatirimDao {
         }
     }
 
+
     public List<Yatirim> getYatirimlar(int userId) {
         List<Yatirim> yatirimListesi = new ArrayList<>();
         Cursor cursor = null;
 
         try {
             cursor = db.query(
-                    "yatirimlar",
+                    "invest",
                     null, // Tüm sütunları seç
                     COLUMN_USER_ID + " = ?",
                     new String[]{String.valueOf(userId)},

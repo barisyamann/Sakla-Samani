@@ -56,10 +56,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(
                 "CREATE TABLE invest (" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "user_id INTEGER," +
                         "userName TEXT NOT NULL," +
-                        "amount REAL NOT NULL," +
+                        "amount REAL," +
                         "note TEXT," +
-                        "FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)"
+                        "yatirimIsmi TEXT," +
+                        "yatirimAdeti REAL," +
+                        "yatirimBirimFiyati REAL," +
+                        "yatirimTuru TEXT NOT NULL," + // Sınıf adını saklar (örn. "Doviz")
+                        "dovizCinsi TEXT," +
+                        "madenTuru TEXT," +
+                        "sirketAdi TEXT," +
+                        "hisseSembolu TEXT," +
+                        "coinSembolu TEXT," +
+                        "coinTipi TEXT," +
+                        "FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE)"
         );
     }
 

@@ -43,4 +43,8 @@ public class Coin extends Yatirim
     public void setCoinTipi(String coinTipi) {
         this.coinTipi = coinTipi;
     }
+    @Override
+    public String getYatirimTuru() {
+        return "Coin";
+    }
 }

@@ -43,4 +43,8 @@ public class Borsa extends Yatirim
     public void setSembol(String sembol) {
         this.sembol = sembol;
     }
+    @Override
+    public String getYatirimTuru() {
+        return "Borsa";
+    }
 }

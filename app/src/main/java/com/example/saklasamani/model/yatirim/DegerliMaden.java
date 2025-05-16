@@ -31,4 +31,8 @@ public class DegerliMaden extends Yatirim
     public void setMadenTuru(String madenTuru) {
         this.madenTuru = madenTuru;
     }
+    @Override
+    public String getYatirimTuru() {
+        return "Maden";
+    }
 }
