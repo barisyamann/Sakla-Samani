@@ -36,7 +36,7 @@ public class HarcamaFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_harcama, container, false);
 
-        // ViewModel'i ilk olarak burada oluştur
+        // ViewModel'i oluştur
         viewModel = new ViewModelProvider(this,
                 new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication()))
                 .get(HarcamaViewModel.class);
@@ -65,7 +65,7 @@ public class HarcamaFragment extends Fragment {
             Log.e("HarcamaFragment", "SessionManager'dan kullanıcı alınamadı.");
         }
 
-        // Gözlemcileri bir kere burada ekle
+        // Canlı veriyi gözlemle
         viewModel.getHarcamalarLiveData().observe(getViewLifecycleOwner(), harcamaList -> {
             adapter.setHarcamalar(harcamaList);
         });
@@ -82,7 +82,6 @@ public class HarcamaFragment extends Fragment {
             textKategoriDetay.setText(sb.toString());
         });
 
-        // Kategori bazlı harcama miktarını gözlemciyi burada bir kere ekle
         viewModel.getKategoriHarcamasi().observe(getViewLifecycleOwner(), miktar -> {
             String seciliKategori = spinnerCategory.getSelectedItem().toString();
             if (!seciliKategori.equals("Tümü")) {
@@ -92,8 +91,18 @@ public class HarcamaFragment extends Fragment {
                 textSeciliKategoriHarcama.setText("Tüm kategoriler görüntüleniyor.");
             }
         });
+        adapter.setOnHarcamaClickListener(harcama -> {
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Silme Onayı")
+                    .setMessage("Bu harcamayı silmek istediğinize emin misiniz?")
+                    .setPositiveButton("Evet", (dialog, which) -> {
+                        viewModel.deleteHarcama(currentUserName, harcama.getNote());
+                    })
+                    .setNegativeButton("Hayır", null)
+                    .show();
+        });
 
-        // Spinner listener sadece kategori seçimini viewModel'e bildirir ve harcamaları filtreler
+        // Spinner seçimine göre filtre uygula
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -109,6 +118,7 @@ public class HarcamaFragment extends Fragment {
             }
         });
 
+        // Başlangıçta tüm harcamaları çek
         viewModel.getHarcamalarAsync(currentUserName);
 
         Button addButton = view.findViewById(R.id.btnAddHarcama);
@@ -134,5 +144,4 @@ public class HarcamaFragment extends Fragment {
 
         return view;
     }
-
 }
