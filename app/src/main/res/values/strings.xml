@@ -28,6 +28,7 @@
     <string name="lutfen_gerekli_alanlari_doldurun">Lütfen gerekli alanları doldurun</string>
     <string name="gecersiz_yatirim_turu">Geçersiz yatırım türü!</string>
     <string name="gecerli_sayi_girin">Lütfen geçerli sayı girin</string>
+    <string name="duzenle_ozelligi_henuz_aktif_degil">Düzenle özelliği henüz aktif değil!</string>
 
     <string-array name="maden_turleri">
         <item>Altın</item>
@@ -39,6 +40,4 @@
         <item>EUR</item>
         <item>GBP</item>
     </string-array>
-
-
 </resources>

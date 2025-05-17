@@ -181,19 +181,19 @@ public class YatirimDao {
     }
 
     public void yatirimSil(Yatirim yatirim, String userName) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase(); // Doğru kullanım: sınıf seviyesindeki dbHelper'ı kullanıyoruz
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         if (yatirim instanceof Coin) {
-            db.delete("coin", "yatirimIsmi = ? AND userName = ?", // "isim" yerine "yatirimIsmi" kullandım
+            db.delete("coin", "yatirimIsmi = ? AND userName = ?",
                     new String[]{yatirim.getYatirimIsmi(), userName});
         } else if (yatirim instanceof Borsa) {
-            db.delete("borsa", "yatirimIsmi = ? AND userName = ?", // "isim" yerine "yatirimIsmi" kullandım
+            db.delete("borsa", "yatirimIsmi = ? AND userName = ?",
                     new String[]{yatirim.getYatirimIsmi(), userName});
         } else if (yatirim instanceof Doviz) {
-            db.delete("doviz", "yatirimIsmi = ? AND userName = ?", // "isim" yerine "yatirimIsmi" kullandım
+            db.delete("doviz", "yatirimIsmi = ? AND userName = ?",
                     new String[]{yatirim.getYatirimIsmi(), userName});
         } else if (yatirim instanceof DegerliMaden) {
-            db.delete("degerli_maden", "yatirimIsmi = ? AND userName = ?", // "isim" yerine "yatirimIsmi" kullandım
+            db.delete("degerli_maden", "yatirimIsmi = ? AND userName = ?",
                     new String[]{yatirim.getYatirimIsmi(), userName});
         }
 

@@ -23,21 +23,19 @@ public class YatirimManager {
     }
 
     // --- COIN EKLE ---
-    public void addCoinInvestment(Coin coin) {
+    public boolean addCoinInvestment(Coin coin) {
         User user = userDao.getUserByUserName(coin.getUserName());
         double investmentAmount = coin.yatirimTutariHesapla();
 
         if (user != null && user.getBudget() >= investmentAmount) {
             yatirimDao.addCoin(coin);
-
-            double newBudget = user.getBudget() - investmentAmount;
-            userDao.updateBudget(coin.getUserName(), newBudget);
-
-            // Güncel kullanıcıyı SessionManager'a yaz (SessionManager sınıfının varlığını varsayıyorum)
-            User updatedUser = userDao.getUserByUserName(coin.getUserName());
-            SessionManager.getInstance().setUser(updatedUser);
+            userDao.updateBudget(coin.getUserName(), user.getBudget() - investmentAmount);
+            SessionManager.getInstance().setUser(userDao.getUserByUserName(coin.getUserName()));
+            return true;
         }
+        return false;
     }
+
 
     // --- TÜM COINLERİ GETİR ---
     public List<Coin> getAllCoins(String userName) {
@@ -45,21 +43,19 @@ public class YatirimManager {
     }
 
     // --- BORSA EKLE ---
-    public void addBorsaInvestment(Borsa borsa) {
+    public boolean addBorsaInvestment(Borsa borsa) {
         User user = userDao.getUserByUserName(borsa.getUserName());
         double investmentAmount = borsa.yatirimTutariHesapla();
 
         if (user != null && user.getBudget() >= investmentAmount) {
             yatirimDao.addBorsa(borsa);
-
-            double newBudget = user.getBudget() - investmentAmount;
-            userDao.updateBudget(borsa.getUserName(), newBudget);
-
-            // Güncel kullanıcıyı SessionManager'a yaz
-            User updatedUser = userDao.getUserByUserName(borsa.getUserName());
-            SessionManager.getInstance().setUser(updatedUser);
+            userDao.updateBudget(borsa.getUserName(), user.getBudget() - investmentAmount);
+            SessionManager.getInstance().setUser(userDao.getUserByUserName(borsa.getUserName()));
+            return true;
         }
+        return false;
     }
+
 
     // --- TÜM BORSALARI GETİR ---
     public List<Borsa> getAllBorsalar(String userName) {
@@ -67,21 +63,19 @@ public class YatirimManager {
     }
 
     // --- DÖVİZ EKLE ---
-    public void addDovizInvestment(Doviz doviz) {
+    public boolean addDovizInvestment(Doviz doviz) {
         User user = userDao.getUserByUserName(doviz.getUserName());
         double investmentAmount = doviz.yatirimTutariHesapla();
 
         if (user != null && user.getBudget() >= investmentAmount) {
             yatirimDao.addDoviz(doviz);
-
-            double newBudget = user.getBudget() - investmentAmount;
-            userDao.updateBudget(doviz.getUserName(), newBudget);
-
-            // Güncel kullanıcıyı SessionManager'a yaz
-            User updatedUser = userDao.getUserByUserName(doviz.getUserName());
-            SessionManager.getInstance().setUser(updatedUser);
+            userDao.updateBudget(doviz.getUserName(), user.getBudget() - investmentAmount);
+            SessionManager.getInstance().setUser(userDao.getUserByUserName(doviz.getUserName()));
+            return true;
         }
+        return false;
     }
+
 
     // --- TÜM DÖVİZLERİ GETİR ---
     public List<Doviz> getAllDovizler(String userName) {
@@ -89,20 +83,21 @@ public class YatirimManager {
     }
 
     // --- DEĞERLİ MADEN EKLE ---
-    public void addDegerliMadenInvestment(DegerliMaden degerliMaden) {
+    public boolean addDegerliMadenInvestment(DegerliMaden degerliMaden) {
         User user = userDao.getUserByUserName(degerliMaden.getUserName());
         double investmentAmount = degerliMaden.yatirimTutariHesapla();
 
         if (user != null && user.getBudget() >= investmentAmount) {
             yatirimDao.addDegerliMaden(degerliMaden);
+            userDao.updateBudget(degerliMaden.getUserName(), user.getBudget() - investmentAmount);
 
-            double newBudget = user.getBudget() - investmentAmount;
-            userDao.updateBudget(degerliMaden.getUserName(), newBudget);
+            // SessionManager'daki kullanıcıyı güncelle
+            SessionManager.getInstance().setUser(userDao.getUserByUserName(degerliMaden.getUserName()));
 
-            // Güncel kullanıcıyı SessionManager'a yaz
-            User updatedUser = userDao.getUserByUserName(degerliMaden.getUserName());
-            SessionManager.getInstance().setUser(updatedUser);
+            return true; // yatırım ve bütçe işlemi başarılı
         }
+
+        return false; // yetersiz bütçe
     }
 
     // --- TÜM DEĞERLİ MADENLERİ GETİR ---
