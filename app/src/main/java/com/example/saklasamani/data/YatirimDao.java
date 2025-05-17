@@ -82,6 +82,14 @@ public class YatirimDao {
             db.close();
         }
     }
+    public List<Yatirim> tumYatirimlariGetir(User user) {
+        List<Yatirim> tumYatirimlar = new ArrayList<>();
+        tumYatirimlar.addAll(tumCoinleriGetir(user));
+        tumYatirimlar.addAll(tumBorsalariGetir(user));
+        tumYatirimlar.addAll(tumDovizleriGetir(user));
+        tumYatirimlar.addAll(tumMadenleriGetir(user));
+        return tumYatirimlar;
+    }
 
 
     // --- TÜM BORSALARI GETİR ---
@@ -181,24 +189,58 @@ public class YatirimDao {
         return degerliMadenList;
     }
 
-    public void yatirimSil(Yatirim yatirim, String userName) {
+    public double yatirimSil(Yatirim yatirim, String userName) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        double silinenTutar = 0;
 
         if (yatirim instanceof Coin) {
+            Cursor cursor = db.rawQuery("SELECT yatirimAdeti, yatirimBirimFiyati FROM coin WHERE yatirimIsmi = ? AND userName = ?",
+                    new String[]{yatirim.getYatirimIsmi(), userName});
+            if (cursor.moveToFirst()) {
+                double adet = cursor.getDouble(cursor.getColumnIndexOrThrow("yatirimAdeti"));
+                double birimFiyat = cursor.getDouble(cursor.getColumnIndexOrThrow("yatirimBirimFiyati"));
+                silinenTutar = adet * birimFiyat;
+            }
+            cursor.close();
             db.delete("coin", "yatirimIsmi = ? AND userName = ?",
                     new String[]{yatirim.getYatirimIsmi(), userName});
         } else if (yatirim instanceof Borsa) {
+            Cursor cursor = db.rawQuery("SELECT yatirimAdeti, yatirimBirimFiyati FROM borsa WHERE yatirimIsmi = ? AND userName = ?",
+                    new String[]{yatirim.getYatirimIsmi(), userName});
+            if (cursor.moveToFirst()) {
+                double adet = cursor.getDouble(cursor.getColumnIndexOrThrow("yatirimAdeti"));
+                double birimFiyat = cursor.getDouble(cursor.getColumnIndexOrThrow("yatirimBirimFiyati"));
+                silinenTutar = adet * birimFiyat;
+            }
+            cursor.close();
             db.delete("borsa", "yatirimIsmi = ? AND userName = ?",
                     new String[]{yatirim.getYatirimIsmi(), userName});
         } else if (yatirim instanceof Doviz) {
+            Cursor cursor = db.rawQuery("SELECT yatirimAdeti, yatirimBirimFiyati FROM doviz WHERE yatirimIsmi = ? AND userName = ?",
+                    new String[]{yatirim.getYatirimIsmi(), userName});
+            if (cursor.moveToFirst()) {
+                double adet = cursor.getDouble(cursor.getColumnIndexOrThrow("yatirimAdeti"));
+                double birimFiyat = cursor.getDouble(cursor.getColumnIndexOrThrow("yatirimBirimFiyati"));
+                silinenTutar = adet * birimFiyat;
+            }
+            cursor.close();
             db.delete("doviz", "yatirimIsmi = ? AND userName = ?",
                     new String[]{yatirim.getYatirimIsmi(), userName});
         } else if (yatirim instanceof DegerliMaden) {
+            Cursor cursor = db.rawQuery("SELECT yatirimAdeti, yatirimBirimFiyati FROM degerli_maden WHERE yatirimIsmi = ? AND userName = ?",
+                    new String[]{yatirim.getYatirimIsmi(), userName});
+            if (cursor.moveToFirst()) {
+                double adet = cursor.getDouble(cursor.getColumnIndexOrThrow("yatirimAdeti"));
+                double birimFiyat = cursor.getDouble(cursor.getColumnIndexOrThrow("yatirimBirimFiyati"));
+                silinenTutar = adet * birimFiyat;
+            }
+            cursor.close();
             db.delete("degerli_maden", "yatirimIsmi = ? AND userName = ?",
                     new String[]{yatirim.getYatirimIsmi(), userName});
         }
-        Log.d("Silme", "Siliniyor: " + yatirim.getYatirimIsmi() + ", kullanıcı: " + userName);//SON EKLEEM SİLME İÇİN
+        Log.d("Silme", "Siliniyor: " + yatirim.getYatirimIsmi() + ", kullanıcı: " + userName + ", tutar: " + silinenTutar);
         db.close();
+        return silinenTutar;
     }
     public List<Yatirim> tumCoinleriGetir(User user) {
         List<Yatirim> liste = new ArrayList<>();

@@ -63,7 +63,6 @@ public class YatirimAdapter extends RecyclerView.Adapter<YatirimAdapter.YatirimV
             textViewYatirimDetay = itemView.findViewById(R.id.textViewYatirimDetay);
             textViewYatirimTutari = itemView.findViewById(R.id.textViewYatirimTutari);
             imageViewSil = itemView.findViewById(R.id.imageViewSil);
-            imageViewDuzenle = itemView.findViewById(R.id.imageViewDuzenle);
         }
 
         public void bind(Yatirim yatirim, OnYatirimClickListener listener) {
@@ -99,13 +98,6 @@ public class YatirimAdapter extends RecyclerView.Adapter<YatirimAdapter.YatirimV
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     listener.onSilClick(position);
-                }
-            });
-
-            imageViewDuzenle.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    listener.onDuzenleClick(position);
                 }
             });
         }

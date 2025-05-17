@@ -9,6 +9,7 @@ import com.example.saklasamani.model.yatirim.Coin;
 import com.example.saklasamani.model.User;
 import com.example.saklasamani.model.yatirim.DegerliMaden;
 import com.example.saklasamani.model.yatirim.Doviz;
+import com.example.saklasamani.model.yatirim.Yatirim;
 
 import java.util.List;
 
@@ -98,6 +99,20 @@ public class YatirimManager {
         }
 
         return false; // yetersiz bütçe
+    }
+    public boolean yatirimSil(Yatirim yatirim, String userName) {
+        User user = userDao.getUserByUserName(userName);
+        if (user != null) {
+            double silinenTutar = yatirimDao.yatirimSil(yatirim, userName);
+            if (silinenTutar > 0) {
+                boolean updated = userDao.increaseBudget(userName, silinenTutar);
+                if (updated) {
+                    SessionManager.getInstance().setUser(userDao.getUserByUserName(userName));
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     // --- TÜM DEĞERLİ MADENLERİ GETİR ---

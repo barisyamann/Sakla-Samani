@@ -286,11 +286,15 @@ public class YatirimFragment extends Fragment implements YatirimAdapter.OnYatiri
                 .setPositiveButton(R.string.evet, (dialog, which) -> {
                     // Kullanıcı "Evet" derse silme işlemini gerçekleştir
                     Yatirim silinecek = yatirimListesi.get(position);
-                    yatirimDao.yatirimSil(silinecek, aktifKullanici.getUserName());
-                    yatirimListesi.remove(position);
-                    adapter.notifyItemRemoved(position);
-                    guncelleToplamTutar();
-                    Toast.makeText(requireContext(), R.string.yatirim_silindi, Toast.LENGTH_SHORT).show();
+                    boolean basariliSilme = yatirimManager.yatirimSil(silinecek, aktifKullanici.getUserName());
+                    if (basariliSilme) {
+                        yatirimListesi.remove(position);
+                        adapter.notifyItemRemoved(position);
+                        guncelleToplamTutar();
+                        Toast.makeText(requireContext(), R.string.yatirim_silindi, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(requireContext(), R.string.hata_yatirim_silinemedi, Toast.LENGTH_SHORT).show();
+                    }
                 })
                 .setNegativeButton(R.string.hayir, (dialog, which) -> {
                     // Kullanıcı "Hayır" derse hiçbir şey yapma, dialog kapanır
@@ -302,6 +306,6 @@ public class YatirimFragment extends Fragment implements YatirimAdapter.OnYatiri
 
     @Override
     public void onDuzenleClick(int position) {
-        Toast.makeText(requireContext(), R.string.duzenle_ozelligi_henuz_aktif_degil, Toast.LENGTH_SHORT).show();
+
     }
 }
