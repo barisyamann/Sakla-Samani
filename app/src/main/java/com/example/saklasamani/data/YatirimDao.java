@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.saklasamani.model.User;
 import com.example.saklasamani.model.yatirim.Borsa;
@@ -196,7 +197,7 @@ public class YatirimDao {
             db.delete("degerli_maden", "yatirimIsmi = ? AND userName = ?",
                     new String[]{yatirim.getYatirimIsmi(), userName});
         }
-
+        Log.d("Silme", "Siliniyor: " + yatirim.getYatirimIsmi() + ", kullanıcı: " + userName);//SON EKLEEM SİLME İÇİN
         db.close();
     }
     public List<Yatirim> tumCoinleriGetir(User user) {

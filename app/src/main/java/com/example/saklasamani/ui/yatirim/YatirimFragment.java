@@ -286,7 +286,7 @@ public class YatirimFragment extends Fragment implements YatirimAdapter.OnYatiri
                 .setPositiveButton(R.string.evet, (dialog, which) -> {
                     // Kullanıcı "Evet" derse silme işlemini gerçekleştir
                     Yatirim silinecek = yatirimListesi.get(position);
-                    yatirimDao.yatirimSil(silinecek, String.valueOf(aktifKullanici));
+                    yatirimDao.yatirimSil(silinecek, aktifKullanici.getUserName());
                     yatirimListesi.remove(position);
                     adapter.notifyItemRemoved(position);
                     guncelleToplamTutar();
