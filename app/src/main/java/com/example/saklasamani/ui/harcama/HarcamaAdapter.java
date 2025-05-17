@@ -15,44 +15,80 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HarcamaAdapter extends RecyclerView.Adapter<HarcamaAdapter.HarcamaViewHolder> {
+    private List<Harcama> harcamalar = new ArrayList<>();
+    private OnHarcamaLongClickListener longClickListener;
+    private OnHarcamaClickListener clickListener;  // Normal tıklama listener
 
-    private List<Harcama> harcamaList = new ArrayList<>();
+    // Uzun tıklama için interface
+    public interface OnHarcamaLongClickListener {
+        void onHarcamaLongClicked(Harcama harcama);
+    }
+
+    // Normal tıklama için interface
+    public interface OnHarcamaClickListener {
+        void onHarcamaClicked(Harcama harcama);
+    }
+
+    public void setOnHarcamaLongClickListener(OnHarcamaLongClickListener listener) {
+        this.longClickListener = listener;
+    }
+
+    public void setOnHarcamaClickListener(OnHarcamaClickListener listener) {
+        this.clickListener = listener;
+    }
+
+    public void setHarcamalar(List<Harcama> harcamaList) {
+        this.harcamalar = harcamaList;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
     public HarcamaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.harcama_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.harcama_item, parent, false);
         return new HarcamaViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HarcamaViewHolder holder, int position) {
-        Harcama harcama = harcamaList.get(position);
-        holder.textAmount.setText(String.format("Tutar: %.2f ₺", harcama.getAmount()));
-
-        holder.textCategory.setText("Kategori: " + harcama.getCategory());
-        holder.textNote.setText("Not: " + harcama.getNote());
+        Harcama harcama = harcamalar.get(position);
+        holder.bind(harcama);
     }
 
     @Override
     public int getItemCount() {
-        return harcamaList.size();
+        return harcamalar.size();
     }
 
-    public void setHarcamalar(List<Harcama> list) {
-        this.harcamaList = list;
-        notifyDataSetChanged();
-    }
+    class HarcamaViewHolder extends RecyclerView.ViewHolder {
+        TextView textViewAmount, textViewCategory, textViewNote;
 
-    public static class HarcamaViewHolder extends RecyclerView.ViewHolder {
-        TextView textAmount, textNote, textCategory;
-
-        public HarcamaViewHolder(@NonNull View itemView) {
+        HarcamaViewHolder(@NonNull View itemView) {
             super(itemView);
-            textAmount = itemView.findViewById(R.id.textAmount);
-            textNote = itemView.findViewById(R.id.textNote);
-            textCategory = itemView.findViewById(R.id.textCategory);
+            textViewAmount = itemView.findViewById(R.id.textAmount);
+            textViewCategory = itemView.findViewById(R.id.textCategory);
+            textViewNote = itemView.findViewById(R.id.textNote);
+        }
+
+        void bind(Harcama harcama) {
+            textViewAmount.setText(String.format("%.2f ₺", harcama.getAmount()));
+            textViewCategory.setText(harcama.getCategory());
+            textViewNote.setText(harcama.getNote());
+
+            // Uzun tıklama
+            itemView.setOnLongClickListener(v -> {
+                if (longClickListener != null) {
+                    longClickListener.onHarcamaLongClicked(harcama);
+                }
+                return true;
+            });
+
+            // Normal tıklama
+            itemView.setOnClickListener(v -> {
+                if (clickListener != null) {
+                    clickListener.onHarcamaClicked(harcama);
+                }
+            });
         }
     }
 }

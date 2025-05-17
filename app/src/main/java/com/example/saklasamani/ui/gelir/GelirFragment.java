@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.saklasamani.MainActivity;
 import com.example.saklasamani.R;
 import com.example.saklasamani.data.ExtraIncomeDao;
 import com.example.saklasamani.data.UserDao;
@@ -80,10 +79,25 @@ public class GelirFragment extends Fragment {
             String incomeStr = etMainIncome.getText().toString().trim();
             if (!incomeStr.isEmpty()) {
                 double newIncome = Double.parseDouble(incomeStr);
+                double oldIncome = user.getIncome();
+
                 user.setIncome(newIncome);
                 userDao.updateIncome(user.getUserName(), newIncome);
+
+                // Gelir değişimi kadar bütçeyi güncelle
+                double difference = newIncome - oldIncome;
+                if (difference > 0) {
+                    userDao.increaseBudget(user.getUserName(), difference);
+                } else if (difference < 0) {
+                    userDao.decreaseBudget(user.getUserName(), -difference);
+                }
+
+                // Güncellenmiş user bilgilerini al ve SessionManager'a kaydet
+                user = userDao.getUserByUserName(user.getUserName());
+                SessionManager.getInstance().setUser(user);
+
                 updateUI();
-                Toast.makeText(requireContext(), "Gelir güncellendi.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Gelir ve bütçe güncellendi.", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(requireContext(), "Gelir boş olamaz.", Toast.LENGTH_SHORT).show();
             }
@@ -110,6 +124,12 @@ public class GelirFragment extends Fragment {
             incomeNotes.add(amount + "₺ - " + note);
             adapter.notifyDataSetChanged();
 
+            // Bütçeyi artır
+            userDao.increaseBudget(user.getUserName(), amount);
+            // Güncellenmiş user bilgilerini al ve SessionManager'a kaydet
+            user = userDao.getUserByUserName(user.getUserName());
+            SessionManager.getInstance().setUser(user);
+
             etAmount.setText("");
             etNote.setText("");
             updateUI();
@@ -121,9 +141,18 @@ public class GelirFragment extends Fragment {
 
             if (deleted) {
                 Toast.makeText(requireContext(), "Silindi", Toast.LENGTH_SHORT).show();
+
+                // Bütçeden azalt
+                userDao.decreaseBudget(user.getUserName(), toRemove.getAmount());
+
                 extraIncomeList.remove(position);
                 incomeNotes.remove(position);
                 adapter.notifyDataSetChanged();
+
+                // Güncellenmiş user bilgilerini al ve SessionManager'a kaydet
+                user = userDao.getUserByUserName(user.getUserName());
+                SessionManager.getInstance().setUser(user);
+
                 updateUI();
             }
         });
@@ -139,5 +168,6 @@ public class GelirFragment extends Fragment {
 
         tvTotalExtra.setText("Ek Gelir Toplamı: " + totalExtra + "₺");
         tvTotalIncome.setText("Toplam Gelir: " + (user.getIncome() + totalExtra) + "₺");
+        etMainIncome.setText(String.valueOf(user.getIncome()));
     }
 }

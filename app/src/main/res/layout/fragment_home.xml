@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvTotalExtraIncome"
+            android:id="@+id/tvExtraIncome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -41,7 +41,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTotalExtraIncome" />
+            app:layout_constraintTop_toBottomOf="@id/tvExtraIncome" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
