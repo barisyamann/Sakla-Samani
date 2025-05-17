@@ -3,8 +3,8 @@ package com.example.saklasamani.model.yatirim;
 public class Doviz extends Yatirim {
     private String dovizCinsi;
 
-    public Doviz(String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String dovizCinsi) {
-        super(yatirimIsmi, yatirimAdeti, yatirimBirimFiyati);
+    public Doviz(String userName,String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String dovizCinsi) {
+        super(userName,yatirimIsmi, yatirimAdeti, yatirimBirimFiyati);
         this.dovizCinsi = dovizCinsi;
     }
 

@@ -5,8 +5,8 @@ public class Borsa extends Yatirim
     private String sirketAdi;   // Örn: ASELSAN, THYAO, vb.
     private String sembol;      // Örn: ASELS, THYAO
 
-    public Borsa(String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String sirketAdi, String sembol) {
-        super(yatirimIsmi, yatirimAdeti, yatirimBirimFiyati);
+    public Borsa(String userName,String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String sirketAdi, String sembol) {
+        super(userName,yatirimIsmi, yatirimAdeti, yatirimBirimFiyati);
         this.sirketAdi = sirketAdi;
         this.sembol = sembol;
     }

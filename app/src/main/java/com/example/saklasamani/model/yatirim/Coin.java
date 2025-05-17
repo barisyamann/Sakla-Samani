@@ -5,8 +5,9 @@ public class Coin extends Yatirim
     private String coinSembol;
     private String coinTipi; // örneğin "Kripto", "Stablecoin" gibi
 
-    public Coin(String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String coinSembol, String coinTipi) {
-        super(yatirimIsmi, yatirimAdeti, yatirimBirimFiyati);
+
+    public Coin(String userName,String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String coinSembol, String coinTipi) {
+        super(userName,yatirimIsmi, yatirimAdeti, yatirimBirimFiyati);
         this.coinSembol = coinSembol;
         this.coinTipi = coinTipi;
     }
@@ -47,4 +48,5 @@ public class Coin extends Yatirim
     public String getYatirimTuru() {
         return "Coin";
     }
+
 }

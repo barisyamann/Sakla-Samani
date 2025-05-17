@@ -5,8 +5,10 @@ public abstract class Yatirim implements YatirimInterface
     protected String yatirimIsmi;
     protected double yatirimAdeti;
     protected double yatirimBirimFiyati;
+    private String userName;
 
-    public Yatirim(String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati) {
+    public Yatirim(String userName,String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati) {
+        this.userName=userName;
         this.yatirimIsmi = yatirimIsmi;
         this.yatirimAdeti = yatirimAdeti;
         this.yatirimBirimFiyati = yatirimBirimFiyati;
@@ -42,4 +44,11 @@ public abstract class Yatirim implements YatirimInterface
         return yatirimAdeti * yatirimBirimFiyati;
     }
     public abstract String getYatirimTuru();
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }

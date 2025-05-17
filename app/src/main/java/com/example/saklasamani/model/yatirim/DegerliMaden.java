@@ -4,8 +4,8 @@ public class DegerliMaden extends Yatirim
 {
     private String madenTuru;
 
-    public DegerliMaden(String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String madenTuru) {
-        super(yatirimIsmi, yatirimAdeti, yatirimBirimFiyati);
+    public DegerliMaden(String userName,String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String madenTuru) {
+        super(userName,yatirimIsmi, yatirimAdeti, yatirimBirimFiyati);
         this.madenTuru = madenTuru;
     }
 

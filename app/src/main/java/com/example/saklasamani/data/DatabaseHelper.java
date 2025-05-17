@@ -54,23 +54,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
 
         db.execSQL(
-                "CREATE TABLE invest (" +
-                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "user_id INTEGER," +
-                        "userName TEXT NOT NULL," +
-                        "amount REAL," +
-                        "note TEXT," +
-                        "yatirimIsmi TEXT," +
-                        "yatirimAdeti REAL," +
-                        "yatirimBirimFiyati REAL," +
-                        "yatirimTuru TEXT NOT NULL," + // Sınıf adını saklar (örn. "Doviz")
-                        "dovizCinsi TEXT," +
-                        "madenTuru TEXT," +
-                        "sirketAdi TEXT," +
-                        "hisseSembolu TEXT," +
-                        "coinSembolu TEXT," +
-                        "coinTipi TEXT," +
-                        "FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE)"
+                "CREATE TABLE coin ("+
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                        " userName TEXT NOT NULL,"+
+                        " yatirimIsmi TEXT,"+
+                        " coinSembol TEXT,"+
+                        " coinTipi TEXT,"+
+                        " yatirimAdeti REAL,"+
+                        " yatirimBirimFiyati REAL,"+
+                        " amount REAL,"+
+                        " FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)"
+        );
+        db.execSQL(
+                "CREATE TABLE borsa ("+
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                        " userName TEXT NOT NULL,"+
+                        " yatirimIsmi TEXT,"+
+                        " sirketAdi TEXT,"+
+                        " sembol TEXT,"+
+                        " yatirimAdeti REAL,"+
+                        " yatirimBirimFiyati REAL,"+
+                        " amount REAL,"+
+                        " FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)"
+        );
+        db.execSQL(
+                "CREATE TABLE doviz ("+
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                        " userName TEXT NOT NULL,"+
+                        " yatirimIsmi TEXT,"+
+                        " dovizCinsi TEXT,"+
+                        " yatirimAdeti REAL,"+
+                        " yatirimBirimFiyati REAL,"+
+                        " amount REAL,"+
+                        " FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)"
+        );
+        db.execSQL(
+                "CREATE TABLE degerli_maden ("+
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                        " userName TEXT NOT NULL,"+
+                        " yatirimIsmi TEXT,"+
+                        " madenTuru TEXT,"+
+                        " yatirimAdeti REAL,"+
+                        " yatirimBirimFiyati REAL,"+
+                        " amount REAL ,"+
+                        " FOREIGN KEY(userName) REFERENCES user(userName) ON DELETE CASCADE)"
         );
     }
 
