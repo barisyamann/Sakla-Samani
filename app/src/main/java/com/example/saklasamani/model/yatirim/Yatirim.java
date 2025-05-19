@@ -1,22 +1,24 @@
 package com.example.saklasamani.model.yatirim;
 
-public abstract class Yatirim implements YatirimInterface
-{
+public abstract class Yatirim implements YatirimInterface {
     protected String yatirimIsmi;
     protected double yatirimAdeti;
     protected double yatirimBirimFiyati;
     private String userName;
 
-    public Yatirim(String userName,String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati) {
-        this.userName=userName;
+    public Yatirim(String userName, String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati) {
+        this.userName = userName;
         this.yatirimIsmi = yatirimIsmi;
         this.yatirimAdeti = yatirimAdeti;
         this.yatirimBirimFiyati = yatirimBirimFiyati;
     }
 
-    public abstract double yatirimTutariHesapla();
+    // Ortak tutar hesaplama (kullanmak istemeyen override eder)
+    @Override
+    public double yatirimTutariHesapla() {
+        return yatirimAdeti * yatirimBirimFiyati;
+    }
 
-    // Getter ve Setter'lar
     public String getYatirimIsmi() {
         return yatirimIsmi;
     }
@@ -40,10 +42,11 @@ public abstract class Yatirim implements YatirimInterface
     public void setYatirimBirimFiyati(double yatirimBirimFiyati) {
         this.yatirimBirimFiyati = yatirimBirimFiyati;
     }
+
     public double getYatirimTutari() {
-        return yatirimAdeti * yatirimBirimFiyati;
+        return yatirimTutariHesapla();
     }
-    public abstract String getYatirimTuru();
+
     public String getUserName() {
         return userName;
     }
@@ -51,4 +54,11 @@ public abstract class Yatirim implements YatirimInterface
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+    // Alt sınıflar bunu override edecek
+    @Override
+    public abstract String getYatirimTuru();
+
+    @Override
+    public abstract void bilgiGoster();
 }

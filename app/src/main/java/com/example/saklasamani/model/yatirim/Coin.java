@@ -1,34 +1,32 @@
 package com.example.saklasamani.model.yatirim;
 
-public class Coin extends Yatirim
-{
+public class Coin extends Yatirim {
     private String coinSembol;
-    private String coinTipi; // örneğin "Kripto", "Stablecoin" gibi
+    private String coinTipi; // örnek: Kripto, Stablecoin
 
-
-    public Coin(String userName,String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String coinSembol, String coinTipi) {
-        super(userName,yatirimIsmi, yatirimAdeti, yatirimBirimFiyati);
+    public Coin(String userName, String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String coinSembol, String coinTipi) {
+        super(userName, yatirimIsmi, yatirimAdeti, yatirimBirimFiyati);
         this.coinSembol = coinSembol;
         this.coinTipi = coinTipi;
     }
 
     @Override
-    public double yatirimTutariHesapla() {
-        return yatirimAdeti * yatirimBirimFiyati;
-    }
-
-    @Override
     public void bilgiGoster() {
-        System.out.println("Coin Yatırımı");
-        System.out.println("Coin Adı: " + yatirimIsmi);
-        System.out.println("Coin Sembolü: " + coinSembol);
-        System.out.println("Coin Tipi: " + coinTipi);
+        System.out.println("Yatırım Türü: Coin");
+        System.out.println("Kullanıcı: " + getUserName());
+        System.out.println("Coin İsmi: " + yatirimIsmi);
+        System.out.println("Sembol: " + coinSembol);
+        System.out.println("Tip: " + coinTipi);
         System.out.println("Adet: " + yatirimAdeti);
         System.out.println("Birim Fiyat: " + yatirimBirimFiyati);
         System.out.println("Toplam Tutar: " + yatirimTutariHesapla());
     }
 
-    // Getter ve Setter
+    @Override
+    public String getYatirimTuru() {
+        return "Coin";
+    }
+
     public String getCoinSembol() {
         return coinSembol;
     }
@@ -44,9 +42,4 @@ public class Coin extends Yatirim
     public void setCoinTipi(String coinTipi) {
         this.coinTipi = coinTipi;
     }
-    @Override
-    public String getYatirimTuru() {
-        return "Coin";
-    }
-
 }

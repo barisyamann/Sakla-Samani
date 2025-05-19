@@ -1,21 +1,17 @@
 package com.example.saklasamani.model.yatirim;
 
-public class DegerliMaden extends Yatirim
-{
+public class DegerliMaden extends Yatirim {
     private String madenTuru;
 
-    public DegerliMaden(String userName,String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String madenTuru) {
-        super(userName,yatirimIsmi, yatirimAdeti, yatirimBirimFiyati);
+    public DegerliMaden(String userName, String yatirimIsmi, double yatirimAdeti, double yatirimBirimFiyati, String madenTuru) {
+        super(userName, yatirimIsmi, yatirimAdeti, yatirimBirimFiyati);
         this.madenTuru = madenTuru;
     }
 
     @Override
-    public double yatirimTutariHesapla() {
-        return yatirimAdeti * yatirimBirimFiyati;
-    }
-
-    @Override
     public void bilgiGoster() {
+        System.out.println("Yatırım Türü: Değerli Maden");
+        System.out.println("Kullanıcı: " + getUserName());
         System.out.println("Maden Türü: " + madenTuru);
         System.out.println("Yatırım İsmi: " + yatirimIsmi);
         System.out.println("Adet: " + yatirimAdeti);
@@ -23,16 +19,16 @@ public class DegerliMaden extends Yatirim
         System.out.println("Toplam Tutar: " + yatirimTutariHesapla());
     }
 
-    // Getter ve Setter
+    @Override
+    public String getYatirimTuru() {
+        return "DegerliMaden";
+    }
+
     public String getMadenTuru() {
         return madenTuru;
     }
 
     public void setMadenTuru(String madenTuru) {
         this.madenTuru = madenTuru;
-    }
-    @Override
-    public String getYatirimTuru() {
-        return "Maden";
     }
 }
