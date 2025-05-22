@@ -27,21 +27,21 @@ public class HarcamaFragment extends Fragment {
     private HarcamaViewModel viewModel;
     private RecyclerView recyclerViewHarcama;
     private HarcamaAdapter adapter;
-    private TextView textToplamHarcama, textKategoriDetay, textSeciliKategoriHarcama;
+    private TextView textToplamHarcama, textKategoriDetay;
     private User user;
     private String currentUserName;
+    private Spinner spinnerCategory;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_harcama, container, false);
 
-        // ViewModel'i oluştur
         viewModel = new ViewModelProvider(this,
                 new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication()))
                 .get(HarcamaViewModel.class);
 
-        Spinner spinnerCategory = view.findViewById(R.id.spinnerCategory);
+        spinnerCategory = view.findViewById(R.id.spinnerCategory);
         String[] categories = {"Tümü", "Market", "Ulaşım", "Fatura", "Eğlence", "Sağlık", "Diğer"};
         ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(
                 requireContext(), android.R.layout.simple_spinner_item, categories);
@@ -53,21 +53,19 @@ public class HarcamaFragment extends Fragment {
         adapter = new HarcamaAdapter();
         recyclerViewHarcama.setAdapter(adapter);
 
-        textSeciliKategoriHarcama = view.findViewById(R.id.text_secili_kategori_harcama);
         textToplamHarcama = view.findViewById(R.id.text_total_harcama);
         textKategoriDetay = view.findViewById(R.id.text_kategori_detay);
 
         user = SessionManager.getInstance().getUser();
-        if (user != null) {
-            currentUserName = user.getUserName();
-        } else {
-            currentUserName = "default_user";
-            Log.e("HarcamaFragment", "SessionManager'dan kullanıcı alınamadı.");
-        }
+        currentUserName = (user != null) ? user.getUserName() : "default_user";
 
-        // Canlı veriyi gözlemle
         viewModel.getHarcamalarLiveData().observe(getViewLifecycleOwner(), harcamaList -> {
-            adapter.setHarcamalar(harcamaList);
+            String selectedCategory = spinnerCategory.getSelectedItem().toString();
+            if (selectedCategory.equals("Tümü")) {
+                adapter.setHarcamalar(harcamaList);
+            } else {
+                adapter.setHarcamalarFiltered(harcamaList, selectedCategory);
+            }
         });
 
         viewModel.getToplamHarcama().observe(getViewLifecycleOwner(), toplam -> {
@@ -82,15 +80,6 @@ public class HarcamaFragment extends Fragment {
             textKategoriDetay.setText(sb.toString());
         });
 
-        viewModel.getKategoriHarcamasi().observe(getViewLifecycleOwner(), miktar -> {
-            String seciliKategori = spinnerCategory.getSelectedItem().toString();
-            if (!seciliKategori.equals("Tümü")) {
-                textSeciliKategoriHarcama.setText(
-                        String.format("'%s' Kategorisi: %.2f ₺", seciliKategori, miktar));
-            } else {
-                textSeciliKategoriHarcama.setText("Tüm kategoriler görüntüleniyor.");
-            }
-        });
         adapter.setOnHarcamaClickListener(harcama -> {
             new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                     .setTitle("Silme Onayı")
@@ -102,23 +91,16 @@ public class HarcamaFragment extends Fragment {
                     .show();
         });
 
-        // Spinner seçimine göre filtre uygula
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedKategori = parent.getItemAtPosition(position).toString();
-                viewModel.setSelectedKategori(selectedKategori);
-                viewModel.getHarcamalarByKategori(currentUserName, selectedKategori);
+                viewModel.getHarcamalarAsync(currentUserName); // Liste ve toplam otomatik güncellenecek
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                viewModel.setSelectedKategori("Tümü");
-                viewModel.getHarcamalarByKategori(currentUserName, "Tümü");
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        // Başlangıçta tüm harcamaları çek
         viewModel.getHarcamalarAsync(currentUserName);
 
         Button addButton = view.findViewById(R.id.btnAddHarcama);

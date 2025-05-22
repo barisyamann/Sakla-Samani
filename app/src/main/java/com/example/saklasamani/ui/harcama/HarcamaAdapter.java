@@ -29,6 +29,17 @@ public class HarcamaAdapter extends RecyclerView.Adapter<HarcamaAdapter.HarcamaV
         void onHarcamaClicked(Harcama harcama);
     }
 
+    public void setHarcamalarFiltered(List<Harcama> fullList, String category) {
+        List<Harcama> filtered = new ArrayList<>();
+        for (Harcama h : fullList) {
+            if (h.getCategory().equals(category)) {
+                filtered.add(h);
+            }
+        }
+        this.harcamalar = filtered;
+        notifyDataSetChanged();
+    }
+
     public void setOnHarcamaLongClickListener(OnHarcamaLongClickListener listener) {
         this.longClickListener = listener;
     }
