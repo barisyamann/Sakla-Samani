@@ -3,14 +3,14 @@ package com.example.saklasamani.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private int id;
+
     private String userName;
     private String password;
     private double income;
     private double budget;
 
     public User(int id, String userName, String password, double income, double budget) {
-        this.id = id;
+
         this.userName = userName;
         this.password = password;
         this.income = income;
@@ -30,13 +30,9 @@ public class User implements Serializable {
     }
 
     // Getter - Setter'lar
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
+
 
     public String getUserName() {
         return userName;

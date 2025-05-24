@@ -12,11 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.saklasamani.R;
 import com.example.saklasamani.data.ExtraIncomeDao;
 import com.example.saklasamani.data.UserDao;
-import com.example.saklasamani.model.User;
-import com.example.saklasamani.manager.SessionManager;
-
-import java.util.List;
-import com.example.saklasamani.model.ExtraIncome;
 
 public class HomeFragment extends Fragment {
 
@@ -25,29 +20,33 @@ public class HomeFragment extends Fragment {
     private UserDao userDao;
     private ExtraIncomeDao extraIncomeDao;
 
-    private User currentUser;
-
     public HomeFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
+        // View tanımlamaları
+        tvIncome = root.findViewById(R.id.tvIncome);
+        tvBudget = root.findViewById(R.id.tvBudget);
+        tvExtraIncome = root.findViewById(R.id.tvExtraIncome);
+
+        // DAO nesneleri oluşturuluyor
         userDao = new UserDao(getContext());
         extraIncomeDao = new ExtraIncomeDao(getContext());
 
-        tvIncome = root.findViewById(R.id.tvIncome);
-        tvBudget = root.findViewById(R.id.tvBudget);
-        tvExtraIncome = root.findViewById(R.id.tvExtraIncome); // Layout'ta bu id olmalı
-
+        // ViewModelProvider ile ViewModel alınıyor ve DAO'lar init ediliyor
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel.init(userDao, extraIncomeDao);
 
-        currentUser = SessionManager.getInstance().getUser();
-
-        updateIncomeViews();
-        updateBudgetView();
-        updateExtraIncomeView();
+        // LiveData gözlemleri (observe) ile UI güncelleniyor
+        homeViewModel.getIncome().observe(getViewLifecycleOwner(), income -> {
+            if (income != null) {
+                tvIncome.setText("Gelir: " + income + "₺");
+            }
+        });
 
         homeViewModel.getBudget().observe(getViewLifecycleOwner(), budget -> {
             if (budget != null) {
@@ -55,33 +54,12 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        homeViewModel.loadUserData(); // Verileri yüklüyoruz
+        homeViewModel.getTotalExtraIncome().observe(getViewLifecycleOwner(), totalExtra -> {
+            if (totalExtra != null) {
+                tvExtraIncome.setText("Toplam Ek Gelir: " + totalExtra + "₺");
+            }
+        });
 
         return root;
-    }
-
-    private void updateIncomeViews() {
-        if (currentUser != null) {
-            double income = currentUser.getIncome();
-            tvIncome.setText("Gelir: " + income + "₺");
-        }
-    }
-
-    private void updateBudgetView() {
-        if (currentUser != null) {
-            double budget = currentUser.getBudget();
-            tvBudget.setText("Bütçe: " + budget + "₺");
-        }
-    }
-
-    private void updateExtraIncomeView() {
-        if (currentUser != null) {
-            List<ExtraIncome> extraIncomes = extraIncomeDao.getExtraIncomes(currentUser.getUserName());
-            double totalExtra = 0;
-            for (ExtraIncome ei : extraIncomes) {
-                totalExtra += ei.getAmount();
-            }
-            tvExtraIncome.setText("Toplam Ek Gelir: " + totalExtra + "₺");
-        }
     }
 }

@@ -66,12 +66,7 @@ public class UserDao {
         return rows > 0;
     }
 
-    public boolean deleteUser(String userName) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        int rows = db.delete("user", "userName = ?", new String[]{userName});
-        db.close();
-        return rows > 0;
-    }
+
 
     public User getUserByUserName(String userName) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
